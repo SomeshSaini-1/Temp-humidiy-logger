@@ -1,0 +1,47 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+// Mock API call
+export const fetchSensorData = createAsyncThunk('sensors/fetchSensorData', async () => {
+  // Simulate API response
+  return [
+    {
+      timestamp: new Date().toISOString(),
+      temperature: 25.5,
+      humidity: 60,
+      dust: 45,
+    },
+    {
+      timestamp: new Date(Date.now() - 3600000).toISOString(),
+      temperature: 24.8,
+      humidity: 58,
+      dust: 50,
+    },
+    {
+      timestamp: new Date(Date.now() - 7200000).toISOString(),
+      temperature: 26.1,
+      humidity: 62,
+      dust: 42,
+    },
+  ];
+});
+
+const sensorSlice = createSlice({
+  name: 'sensors',
+  initialState: {
+    devices: [],
+    sensorData: [],
+  },
+  reducers: {
+    addDevice: (state, action) => {
+      state.devices.push(action.payload);
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(fetchSensorData.fulfilled, (state, action) => {
+      state.sensorData = action.payload;
+    });
+  },
+});
+
+export const { addDevice } = sensorSlice.actions;
+export default sensorSlice.reducer;
