@@ -31,5 +31,5 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           source: "build/"
-          port : 22022,
+          port : 22022
           target: "/var/www/html/somesh/Temp-humidiy-logger/"
