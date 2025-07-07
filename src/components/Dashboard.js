@@ -1,5 +1,3 @@
-
-
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSensorData } from '../redux/sensorSlice';
@@ -15,19 +13,32 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { addSensorData } from '../redux/sensorSlice';
+
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
-
+import { useContext } from 'react';
+import {MqttContext} from '../assets/Mqtt';
+import { useParams } from 'react-router-dom';
 
 export default function Dashboard() {
   const dispatch = useDispatch();
-  const { devices, sensorData } = useSelector((state) => state.sensors);
+  const parmas = useParams()
+  console.log(parmas.id)
+  
+  const { setTopic, data } = useContext(MqttContext);
+
+  useEffect(() => {
+    setTopic(`am_sensor/${parmas.id}/RX`); // Subscribe to a topic when component mounts
+  }, [setTopic]);
+
+  const { sensorData } = useSelector((state) => state.sensors);
 
   useEffect(() => {
     dispatch(fetchSensorData());
   }, [dispatch]);
 
-  console.log(sensorData)
+  console.log(sensorData,data)
 
   const chartData = {
     labels: sensorData.map((data) => new Date(data.timestamp).toLocaleTimeString()),
@@ -47,8 +58,8 @@ export default function Dashboard() {
       {
         label: 'Dust Particles (µg/m³)',
         data: sensorData.map((data) => data.dust),
-        borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+        borderColor: 'rgb(163, 192, 75)',
+        backgroundColor: 'rgba(163, 192, 75, 0.5)',
       },
     ],
   };
@@ -60,6 +71,18 @@ export default function Dashboard() {
       title: { display: true, text: 'Environmental Data Trends' },
     },
   };
+  
+let data_sen = data && JSON.parse(data.payload)
+console.log(data_sen,"data_sen")
+
+useEffect(()=> {
+ data && dispatch(addSensorData({
+      timestamp: new Date().toISOString(),
+      temperature: data_sen?.temperature,
+      humidity: data_sen?.humidity,
+      dust: data_sen?.pm
+    }))
+},[data])
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -92,15 +115,15 @@ export default function Dashboard() {
           {/* Metric Cards */}
           <div className="col-span-1 bg-white p-4 rounded shadow">
             <div className="text-sm text-gray-500 mb-1">Dust Particles</div>
-            <div className="w-full h-32 bg-gray-200 rounded text-2xl font-semibold flex items-center justify-center">23.5 µg/m³</div>
+            <div className="w-full h-32 bg-gray-200 rounded text-2xl font-semibold flex items-center justify-center">{data_sen?.pm || "--"} µg/m³</div>
           </div>
           <div className="col-span-1 bg-white p-4 rounded shadow">
             <div className="text-sm text-gray-500 mb-1">Humidity</div>
-            <div className="w-full h-32 bg-gray-200 rounded text-2xl font-semibold flex items-center justify-center">3.5 </div>
+            <div className="w-full h-32 bg-gray-200 rounded text-2xl font-semibold flex items-center justify-center">{data_sen?.humidity ||"--"} %</div>
           </div>
           <div className="col-span-1 bg-white p-4 rounded shadow">
             <div className="text-sm text-gray-500 mb-2">Temperature </div>
-            <div className="w-full h-32 bg-gray-200 rounded text-2xl font-semibold flex items-center justify-center">29 </div>
+            <div className="w-full h-32 bg-gray-200 rounded text-2xl font-semibold flex items-center justify-center">{data_sen?.temperature || "--"} °C </div>
           </div>
 
         </div>
@@ -126,7 +149,7 @@ export default function Dashboard() {
               {sensorData.map((ele, index) => (
                 <tr key={index}>
                   <td className="border px-2 py-1">{index + 1}</td>
-                  <td className="border px-2 py-1">6465kjh66</td>
+                  <td className="border px-2 py-1">{parmas.id}</td>
                   <td className="border px-2 py-1">{new Date(ele.timestamp).toLocaleString()}</td>
                   <td className="border px-2 py-1">{ele.dust}</td>
                   <td className="border px-2 py-1">{ele.humidity}</td>
@@ -140,3 +163,28 @@ export default function Dashboard() {
     </div>
   );
 }
+
+
+
+// import React, { useContext, useEffect } from 'react';
+// import { MqttContext } from '../assets/Mqtt'; // Adjust the path as needed
+
+// const MyMqttComponent = () => {
+//   const { topic, setTopic, data } = useContext(MqttContext);
+
+//   useEffect(() => {
+//     setTopic('my/topic'); // Subscribe to a topic when component mounts
+//   }, [setTopic]);
+
+//   return (
+//     <div>
+//       <h2>Subscribed Topic: {topic}</h2>
+//       <div>
+//         <strong>Latest Message:</strong>
+//         <pre>{data ? JSON.stringify(data, null, 2) : 'No data yet'}</pre>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default MyMqttComponent;

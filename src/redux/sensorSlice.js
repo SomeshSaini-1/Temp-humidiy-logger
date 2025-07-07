@@ -25,6 +25,24 @@ export const fetchSensorData = createAsyncThunk('sensors/fetchSensorData', async
   ];
 });
 
+// const sensorSlice = createSlice({
+//   name: 'sensors',
+//   initialState: {
+//     devices: [],
+//     sensorData: [],
+//   },
+//   reducers: {
+//     addDevice: (state, action) => {
+//       state.devices.push(action.payload);
+//     },
+//   },
+//   extraReducers: (builder) => {
+//     builder.addCase(fetchSensorData.fulfilled, (state, action) => {
+//       state.sensorData = action.payload;
+//     });
+//   },
+// });
+
 const sensorSlice = createSlice({
   name: 'sensors',
   initialState: {
@@ -35,6 +53,9 @@ const sensorSlice = createSlice({
     addDevice: (state, action) => {
       state.devices.push(action.payload);
     },
+    addSensorData: (state, action) => {
+      state.sensorData.push(action.payload);
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchSensorData.fulfilled, (state, action) => {
@@ -43,5 +64,5 @@ const sensorSlice = createSlice({
   },
 });
 
-export const { addDevice } = sensorSlice.actions;
+export const { addSensorData,addDevice } = sensorSlice.actions;
 export default sensorSlice.reducer;

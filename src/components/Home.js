@@ -18,9 +18,8 @@ function StatCard({ title, id, onClick }) {
 }
 
 const deviceCards = [
-  { title: "Rue Simart1", id: "ASF65R4" },
-  { title: "Rue Simart2", id: "ASF65R5" },
-  { title: "Rue Simart3", id: "ASF65R6" },
+  { title: "Am Sensor", id: "A085E3F17FF0" },
+  // { title: "Rue Simart2", id: "ASF65R5" }
 ];
 
 const Home = () => {
@@ -86,7 +85,7 @@ const Home = () => {
                 key={device.id}
                 title={device.title}
                 id={device.id}
-                onClick={() => navigate('/dashboard')}
+                onClick={() => navigate(`/dashboard/${device.id}`)}
               />
             ))}
           </div>

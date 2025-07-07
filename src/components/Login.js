@@ -12,7 +12,7 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     // Mock login logic
-    if (username === 'admin' && password === 'password') {
+    if (username === 'admin' && password === '1234') {
       dispatch(login());
       navigate('/');
     } else {
