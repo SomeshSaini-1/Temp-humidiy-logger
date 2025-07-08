@@ -8,7 +8,7 @@ const Sidebar = () => {
  
          <aside className="w-64 bg-white border-r shadow-sm p-4">
               <div className="text-2xl font-bold mb-6 text-blue-600">Clarity</div>
-              <nav className="flex flex-col space-y-2">
+              <nav className="flex flex-col space-y-2 items-start">
                 
                 <Link to="/" className="text-gray-600 font-medium">
                   Home
