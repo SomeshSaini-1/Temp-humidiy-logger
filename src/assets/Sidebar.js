@@ -10,7 +10,7 @@ const Sidebar = () => {
               <div className="text-2xl font-bold mb-6 text-blue-600">Clarity</div>
               <nav className="flex flex-col space-y-2 items-start">
                 
-                <Link to="/" className="text-gray-600 font-medium">
+                <Link to="/" className="text-gray-600 font-medium hover:bg-blue-400 rounded ">
                   Home
                 </Link>
                 <Link to="/add-device" className="text-gray-600 font-medium">
