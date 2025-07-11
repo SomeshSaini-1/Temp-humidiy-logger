@@ -19,7 +19,7 @@ function StatCard({ title, id, onClick }) {
 
 const deviceCards = [
   { title: "Am Sensor", id: "A085E3F17FF0" },
-  // { title: "Rue Simart2", id: "ASF65R5" }
+  { title: "Am Sensor new", id: "348518941934" }
 ];
 
 const Home = () => {
