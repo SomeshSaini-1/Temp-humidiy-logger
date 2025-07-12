@@ -3,14 +3,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { addDevice } from '../redux/sensorSlice';
 import { useNavigate, Link } from 'react-router-dom';
 import Sidebar from '../assets/Sidebar';
+import { Delete, SquarePen } from 'lucide-react';
 
 const AddDevice = () => {
   const [deviceName, setDeviceName] = useState('');
   const [deviceId, setDeviceId] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-    const { devices, sensorData } = useSelector((state) => state.sensors);
+
+  const { devices, sensorData } = useSelector((state) => state.sensors);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -67,7 +68,7 @@ const AddDevice = () => {
     //     </form>
     //   </div>
     // </div>
-    
+
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
       <Sidebar />
@@ -82,37 +83,45 @@ const AddDevice = () => {
           <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
         </div>
 
-        
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md  flex flex-col items-start">
-          <div className="w-3xl  mb-4">
-            <label className="block text-gray-700">Device Name</label>
+
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white p-6 rounded shadow-md grid grid-cols-1 md:grid-cols-2 gap-6"
+        >
+          <div className="flex flex-col">
+            <label className="mb-1 text-gray-700 font-medium">Device Name</label>
             <input
               type="text"
               value={deviceName}
               onChange={(e) => setDeviceName(e.target.value)}
-              className=" p-2 border w-full rounded"
+              className="p-2 border rounded"
               required
             />
           </div>
-          <div className="w-3xl  mb-4">
-            <label className="block text-gray-700">Device ID</label>
+
+          <div className="flex flex-col">
+            <label className="mb-1 text-gray-700 font-medium">Device ID</label>
             <input
               type="text"
               value={deviceId}
               onChange={(e) => setDeviceId(e.target.value)}
-              className=" p-2 border w-full rounded"
+              className="p-2 border rounded"
               required
             />
           </div>
-          <button
-            type="submit"
-            className="w-xl  bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-          >
-            Add Device
-          </button>
+
+          <div className="md:col-span-2">
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+            >
+              Add Device
+            </button>
+          </div>
         </form>
 
-        <div className='bg-white p-6 rounded shadow-md my-4'>
+
+        <div className='bg-white p-6 rounded shadow-md my-4 h-3/4 overflow-auto '>
           <table className="min-w-full border">
             <thead>
               <tr>
@@ -126,11 +135,14 @@ const AddDevice = () => {
             <tbody>
               {devices.map((ele, index) => (
                 <tr key={index}>
-                  <td className="border px-2 py-1">{index + 1}</td>
-                  <td className="border px-2 py-1">{ele.id}</td>
-                  <td className="border px-2 py-1">{new Date(ele.timestamp).toLocaleString()}</td>
-                  <td className="border px-2 py-1">{ele.name}</td>
-                  <td></td>
+                  <td className="border p-2">{index + 1}</td>
+                  <td className="border p-2">{ele.id}</td>
+                  <td className="border p-2">{new Date(ele.timestamp).toLocaleString()}</td>
+                  <td className="border p-2">{ele.name}</td>
+                  <td className="flex  border justify-center p-2">
+                    <Delete />
+                    <SquarePen className='ml-2' />
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -1,8 +1,9 @@
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Sidebar from '../assets/Sidebar';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useContext} from 'react-router-dom';
 import { FaDownload, FaSitemap } from "react-icons/fa";
 import { FaChartLine } from "react-icons/fa6";
+import {MqttContext} from '../assets/Mqtt';
 
 function StatCard({ title, id, onClick }) {
   return (
@@ -12,18 +13,20 @@ function StatCard({ title, id, onClick }) {
     >
       <div className="text-gray-700 text-base text-left mb-1 font-semibold">{title}</div>
       <div className="text-gray-500 text-xs text-left mb-3">{id}</div>
-      <div className="bg-red-600 text-white rounded w-full text-center py-2 text-sm font-medium transition">Disconnected</div>
+      {/* <div className="bg-red-600 text-white rounded w-full text-center py-2 text-sm font-medium transition">Disconnected</div> */}
     </div>
   );
 }
 
 const deviceCards = [
-  { title: "Am Sensor", id: "A085E3F17FF0" },
-  { title: "Am Sensor new", id: "348518941934" }
+  { name: "Am Sensor new", id: "348518941934" }
 ];
 
 const Home = () => {
-  const dispatch = useDispatch();
+
+  const {devices} = useSelector((state) => state.sensors)
+  
+  
   const navigate = useNavigate();
 
   return (
@@ -79,11 +82,11 @@ const Home = () => {
         {/* Stats Cards */}
         <div className="bg-white rounded-xl shadow p-6 w-full">
             <h2 className="text-2xl font-bold text-left">Device</h2>
-          <div className="flex gap-6 my-4">
-            {deviceCards.map((device, idx) => (
+          <div className="flex gap-6 my-4 flex-wrap">
+            {devices.map((device, idx) => (
               <StatCard
                 key={device.id}
-                title={device.title}
+                title={device.name}
                 id={device.id}
                 onClick={() => navigate(`/dashboard/${device.id}`)}
               />

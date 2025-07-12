@@ -46,7 +46,9 @@ export const fetchSensorData = createAsyncThunk('sensors/fetchSensorData', async
 const sensorSlice = createSlice({
   name: 'sensors',
   initialState: {
-    devices: [],
+    devices: [
+  { name: "Am Sensor new", id: "348518941934",status:"" }
+    ],
     sensorData: [],
   },
   reducers: {
