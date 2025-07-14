@@ -1,147 +1,204 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addDevice } from '../redux/sensorSlice';
-import { useNavigate, Link } from 'react-router-dom';
-import Sidebar from '../assets/Sidebar';
 import { Delete, SquarePen } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import Sidebar from '../assets/Sidebar';
+import Header from '../assets/Header';
 
 const AddDevice = () => {
-  const [deviceName, setDeviceName] = useState('');
-  const [deviceId, setDeviceId] = useState('');
+
+  const [device, setDevice] = useState({
+    devicename: "",
+    deviceid: "",
+    region: "",
+    category: "",
+    comment: "",
+    date: "",
+    status: "",
+  });
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { devices = [] } = useSelector((state) => state.sensors);
+  const [show, setShow] = useState(false);
 
-  const { devices, sensorData } = useSelector((state) => state.sensors);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setDevice({ ...device, [name]: value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(addDevice({ id: deviceId, name: deviceName }));
-    // navigate('/dashboard');
+    // dispatch(addDevice({ id: device.deviceid, name: device.devicename, date: device.date }));
+    dispatch(addDevice(device));
+    setDevice({
+      devicename: "",
+      deviceid: "",
+      region: "",
+      category: "",
+      comment: "",
+      date: "",
+      status: "",
+    });
+    setShow(false);
   };
 
-  console.log(devices)
-
   return (
-    // <div className="min-h-screen bg-gray-100">
-    //   <nav className="bg-blue-500 p-4">
-    //     <div className="container mx-auto flex justify-between items-center">
-    //       <h1 className="text-white text-2xl">Environmental Dashboard</h1>
-    //       <div>
-    //         <Link to="/dashboard" className="text-white mr-4 hover:underline">
-    //           Dashboard
-    //         </Link>
-    //         <Link to="/" className="text-white mr-4 hover:underline">
-    //           Home
-    //         </Link>
-    //       </div>
-    //     </div>
-    //   </nav>
-    //   <div className="container mx-auto p-4">
-    //     <h2 className="text-2xl font-bold mb-4">Add New Device</h2>
-    //     <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md max-w-md mx-auto">
-    //       <div className="mb-4">
-    //         <label className="block text-gray-700">Device Name</label>
-    //         <input
-    //           type="text"
-    //           value={deviceName}
-    //           onChange={(e) => setDeviceName(e.target.value)}
-    //           className="w-full p-2 border rounded"
-    //           required
-    //         />
-    //       </div>
-    //       <div className="mb-4">
-    //         <label className="block text-gray-700">Device ID</label>
-    //         <input
-    //           type="text"
-    //           value={deviceId}
-    //           onChange={(e) => setDeviceId(e.target.value)}
-    //           className="w-full p-2 border rounded"
-    //           required
-    //         />
-    //       </div>
-    //       <button
-    //         type="submit"
-    //         className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-    //       >
-    //         Add Device
-    //       </button>
-    //     </form>
-    //   </div>
-    // </div>
-
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
       <Sidebar />
-      {/* Main content */}
+
+      {/* Modal for Adding Device */}
+      {show && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50" onClick={()=> setShow(false)}>
+          <form
+            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
+            onSubmit={handleSubmit}
+            className="bg-white p-6 rounded-xl shadow-md grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl"
+          >
+            <div className="flex flex-col">
+              <label className="text-sm font-medium text-gray-700 text-left">Device Name</label>
+              <input
+                type="text"
+                name="devicename"
+                value={device.devicename}
+                onChange={handleChange}
+                className="p-2 border rounded"
+                required
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <label className="text-sm font-medium text-gray-700 text-left">Device ID</label>
+              <input
+                type="text"
+                name="deviceid"
+                value={device.deviceid}
+                onChange={handleChange}
+                className="p-2 border rounded"
+                required
+              />
+            </div>
+
+            <div className="flex flex-col">
+              <label className="text-sm font-medium text-gray-700 text-left">Region</label>
+              <select
+                type="text"
+                name="region"
+                value={device.region}
+                onChange={handleChange}
+                className="p-2 border rounded"
+              >
+                {
+                  ["North", "Northeast", "East", "West", "South"].map(ele => (
+                    <option value={ele}>{ele}</option>
+                  ) )
+                }
+              </select>
+            </div>
+
+            <div className="flex flex-col">
+              <label className="text-sm font-medium text-gray-700 text-left">Category</label>
+              <input
+                name="category"
+                value={device.category}
+                onChange={handleChange}
+                className="p-2 border rounded"
+              />
+               
+            </div>
+
+            <div className="flex flex-col">
+              <label className="text-sm font-medium text-gray-700 text-left">Status</label>
+              <select
+                name="status"
+                value={device.status}
+                onChange={handleChange}
+                className="p-2 border rounded"
+              >
+                <option value="">Select</option>
+                <option value="Active">Active</option>
+                <option value="Inactive">Inactive</option>
+              </select>
+            </div>
+
+            <div className="flex flex-col">
+              <label className="text-sm font-medium text-gray-700 text-left">Date</label>
+              <input
+                type="date"
+                name="date"
+                value={device.date}
+                onChange={handleChange}
+                className="p-2 border rounded"
+              />
+            </div>
+
+            <div className="md:col-span-2 flex flex-col">
+              <label className="text-sm font-medium text-gray-700 text-left">Comment</label>
+              <textarea
+                name="comment"
+                value={device.comment}
+                onChange={handleChange}
+                className="p-2 border rounded"
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
+              >
+                Add Device
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
       <main className="flex-1 p-6 overflow-y-auto">
-        {/* Top Bar */}
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <div className="text-xl font-semibold">Add Device</div>
-            {/* <div className="text-sm text-gray-500">Time Range: 2019-01-03 11:00 - 2019-02-03 11:00</div> */}
-          </div>
-          <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
+        <Header Name="Device" />
+
+        {/* Page Title & Add Button */}
+        <div className="flex justify-between items-center mb-6 border py-4 px-2 rounded-xl bg-white">
+          <div className="text-sm text-gray-500">Home / Add Device</div>
+          <button
+            onClick={() => setShow(!show)}
+            className="flex items-center bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition"
+          >
+            + Add Device
+          </button>
         </div>
 
-
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white p-6 rounded shadow-md grid grid-cols-1 md:grid-cols-2 gap-6"
-        >
-          <div className="flex flex-col">
-            <label className="mb-1 text-gray-700 font-medium">Device Name</label>
-            <input
-              type="text"
-              value={deviceName}
-              onChange={(e) => setDeviceName(e.target.value)}
-              className="p-2 border rounded"
-              required
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label className="mb-1 text-gray-700 font-medium">Device ID</label>
-            <input
-              type="text"
-              value={deviceId}
-              onChange={(e) => setDeviceId(e.target.value)}
-              className="p-2 border rounded"
-              required
-            />
-          </div>
-
-          <div className="md:col-span-2">
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-            >
-              Add Device
-            </button>
-          </div>
-        </form>
-
-
-        <div className='bg-white p-6 rounded shadow-md my-4 h-3/4 overflow-auto '>
-          <table className="min-w-full border">
-            <thead>
+        {/* Devices Table */}
+        <div className="bg-white p-6 rounded-xl shadow-md overflow-auto h-[75%]">
+          <table className="min-w-full text-sm text-left border">
+            <thead className="bg-gray-100">
               <tr>
-                <th className="border px-2 py-1">Sr. No.</th>
-                <th className="border px-2 py-1">Device ID</th>
-                <th className="border px-2 py-1">Date/Time</th>
-                <th className="border px-2 py-1">Device Name</th>
-                <th>Actions</th>
+                <th className="border px-3 py-2">Sr. No.</th>
+                <th className="border px-3 py-2">Device ID</th>
+                <th className="border px-3 py-2">Date</th>
+                <th className="border px-3 py-2">Device Name</th>
+                <th className="border px-3 py-2">Category</th>
+                <th className="border px-3 py-2">Region</th>
+                <th className="border px-3 py-2">View Device</th>
+                <th className="border px-3 py-2 text-center">Actions</th>
               </tr>
             </thead>
             <tbody>
               {devices.map((ele, index) => (
-                <tr key={index}>
-                  <td className="border p-2">{index + 1}</td>
-                  <td className="border p-2">{ele.id}</td>
-                  <td className="border p-2">{new Date(ele.timestamp).toLocaleString()}</td>
-                  <td className="border p-2">{ele.name}</td>
-                  <td className="flex  border justify-center p-2">
-                    <Delete />
-                    <SquarePen className='ml-2' />
+                <tr key={index} className="hover:bg-gray-50">
+                  <td className="border px-3 py-2">{index + 1}</td>
+                  <td className="border px-3 py-2">{ele.id}</td>
+                  <td className="border px-3 py-2">{ele.date || '-'}</td>
+                  <td className="border px-3 py-2">{ele.name}</td>
+                  <td className="border px-3 py-2">{ele.category}</td>
+                  <td className="border px-3 py-2">{ele.region}</td>
+                  <td className="border px-3 py-2">
+                    <button onClick={() => navigate(`/dashboard/${ele.id}/${ele.name}`)} className='rounded text-white bg-green-500 cursor-pointer p-2'>View Device</button>
+                  </td>
+                  <td className="border px-3 py-2 text-center flex justify-center gap-2">
+                    <Delete className="text-red-500 cursor-pointer" />
+                    <SquarePen className="text-blue-500 cursor-pointer" />
                   </td>
                 </tr>
               ))}

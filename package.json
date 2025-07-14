@@ -8,6 +8,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@react-google-maps/api": "^2.20.7",
     "@reduxjs/toolkit": "^1.9.5",
     "chart.js": "^4.4.0",
     "lucide-react": "^0.525.0",

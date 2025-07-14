@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchSensorData } from '../redux/sensorSlice';
 import { Line } from 'react-chartjs-2';
 import Sidebar from '../assets/Sidebar';
+import Header from '../assets/Header';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,7 +25,7 @@ import { useParams } from 'react-router-dom';
 export default function Dashboard() {
   const dispatch = useDispatch();
   const parmas = useParams()
-  console.log(parmas.id)
+  console.log(parmas.id,parmas.name)
   
   const { setTopic, data } = useContext(MqttContext);
 
@@ -50,17 +51,17 @@ export default function Dashboard() {
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
-        label: 'Humidity (%)',
+        label: 'Humidity (%RH)',
         data: sensorData.map((data) => data.humidity),
         borderColor: 'rgb(54, 162, 235)',
         backgroundColor: 'rgba(54, 162, 235, 0.5)',
       },
-      {
-        label: 'Dust Particles (µg/m³)',
-        data: sensorData.map((data) => data.dust),
-        borderColor: 'rgb(163, 192, 75)',
-        backgroundColor: 'rgba(163, 192, 75, 0.5)',
-      },
+      // {
+      //   label: 'Dust Particles (µg/m³)',
+      //   data: sensorData.map((data) => data.dust),
+      //   borderColor: 'rgb(163, 192, 75)',
+      //   backgroundColor: 'rgba(163, 192, 75, 0.5)',
+      // },
     ],
   };
 
@@ -72,7 +73,8 @@ export default function Dashboard() {
     },
   };
   
-let data_sen = data && JSON.parse(data.payload)
+let data_sen = data && JSON.parse(data?.payload)
+
 console.log(data_sen,"data_sen")
 
 useEffect(()=> {
@@ -90,20 +92,14 @@ useEffect(()=> {
       <Sidebar />
       {/* Main content */}
       <main className="flex-1 p-6 overflow-y-auto">
-        {/* Top Bar */}
-        <div className="flex justify-between items-center mb-6">
-          <div>
-            <div className="text-xl font-semibold">Rue Simart - ASF65R4</div>
-            {/* <div className="text-sm text-gray-500">Time Range: 2019-01-03 11:00 - 2019-02-03 11:00</div> */}
-          </div>
-          <div className="w-6 h-6 bg-gray-300 rounded-full"></div>
-        </div>
+     
+     <Header Name={parmas.name+"-"+parmas.id}/>
 
         {/* Filter */}
         <div className="flex items-center space-x-4 mb-4">
           <label className="text-sm font-medium">Parameter:</label>
           <select className="border rounded px-2 py-1 text-sm">
-            <option>Dust Particles Concentration</option>
+            {/* <option>Dust Particles Concentration</option> */}
             <option>HumidityConcentration</option>
             <option>Temperature Concentration</option>
           </select>
@@ -113,13 +109,13 @@ useEffect(()=> {
         {/* Grid layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Metric Cards */}
-          <div className="col-span-1 bg-white p-4 rounded shadow">
+          {/* <div className="col-span-1 bg-white p-4 rounded shadow">
             <div className="text-sm text-gray-500 mb-1">Dust Particles</div>
             <div className="w-full h-32 bg-gray-200 rounded text-2xl font-semibold flex items-center justify-center">{data_sen?.pm || "--"} µg/m³</div>
-          </div>
+          </div> */}
           <div className="col-span-1 bg-white p-4 rounded shadow">
             <div className="text-sm text-gray-500 mb-1">Humidity</div>
-            <div className="w-full h-32 bg-gray-200 rounded text-2xl font-semibold flex items-center justify-center">{data_sen?.humidity ||"--"} %</div>
+            <div className="w-full h-32 bg-gray-200 rounded text-2xl font-semibold flex items-center justify-center">{data_sen?.humidity ||"--"} %RH</div>
           </div>
           <div className="col-span-1 bg-white p-4 rounded shadow">
             <div className="text-sm text-gray-500 mb-2">Temperature </div>
@@ -140,7 +136,7 @@ useEffect(()=> {
                 <th className="border px-2 py-1">Sr. No.</th>
                 <th className="border px-2 py-1">Device ID</th>
                 <th className="border px-2 py-1">Date/Time</th>
-                <th className="border px-2 py-1">Dust Particles</th>
+                {/* <th className="border px-2 py-1">Dust Particles</th> */}
                 <th className="border px-2 py-1">Humidity</th>
                 <th className="border px-2 py-1">Temperature</th>
               </tr>
@@ -151,7 +147,7 @@ useEffect(()=> {
                   <td className="border px-2 py-1">{index + 1}</td>
                   <td className="border px-2 py-1">{parmas.id}</td>
                   <td className="border px-2 py-1">{new Date(ele.timestamp).toLocaleString()}</td>
-                  <td className="border px-2 py-1">{ele.dust}</td>
+                  {/* <td className="border px-2 py-1">{ele.dust}</td> */}
                   <td className="border px-2 py-1">{ele.humidity}</td>
                   <td className="border px-2 py-1">{ele.temperature}</td>
                 </tr>
