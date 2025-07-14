@@ -73,7 +73,18 @@ export default function Dashboard() {
     },
   };
   
-let data_sen = data && JSON.parse(data?.payload)
+// let data_sen = data && JSON.parse(data?.payload)
+
+let data_sen = null;
+try {
+  if (data?.payload) {
+    data_sen = JSON.parse(data.payload);
+  }
+} catch (err) {
+  console.error("❌ Failed to parse MQTT payload:", data.payload);
+  console.error(err);
+}
+
 
 console.log(data_sen,"data_sen")
 
@@ -82,7 +93,7 @@ useEffect(()=> {
       timestamp: new Date().toISOString(),
       temperature: data_sen?.temperature,
       humidity: data_sen?.humidity,
-      dust: data_sen?.pm
+      // dust: data_sen?.pm
     }))
 },[data])
 
