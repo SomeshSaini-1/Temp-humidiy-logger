@@ -89,6 +89,9 @@ export default function Dashboard() {
   const get_data = async () => {
     const api = await fetch("http://otplai.com:4004/api/get_data", {
       method: "POST",
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         id: parmas.id
       })
@@ -230,7 +233,7 @@ export default function Dashboard() {
                 <tr key={index}>
                   <td className="border px-2 py-1">{index + 1}</td>
                   <td className="border px-2 py-1">{parmas.id}</td>
-                  <td className="border px-2 py-1">{ele.date}</td>
+                  <td className="border px-2 py-1">{new Date(ele.date).toLocaleTimeString()}</td>
                   {/* <td className="border px-2 py-1">{ele.dust}</td> */}
                   <td className="border px-2 py-1">{ele.hume}</td>
                   <td className="border px-2 py-1">{ele.Temp}</td>

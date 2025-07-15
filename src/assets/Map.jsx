@@ -10,9 +10,13 @@ const Map = () => {
   const googleMapsApiKey = "AIzaSyA0eGBoFH35UACgzF4UZM34t2NC-SWDFIA";
 
   const [position, setPosition] = useState([
-    {
-      lat: 26.855980263390784,
-      lng: 75.78391780923478,
+   {
+      lat: 26.852770,
+      lng: 75.779541,
+    },
+     {
+      lat: 26.852770,
+      lng: 75.779541,
     }
   ]);
 
@@ -24,9 +28,9 @@ const Map = () => {
           zoom={10}
           center={defaultCenter}
         >
-          <Marker position={position[0]} />
+          {/* <Marker position={position[0]} /> */}
           {/* Or use below if you have multiple markers */}
-          {/* {position.map((pos, idx) => <Marker key={idx} position={pos} />)} */}
+          {position.map((pos, idx) => <Marker key={idx} position={pos} />)}
         </GoogleMap>
       </LoadScript>
     </div>
