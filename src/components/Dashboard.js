@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSensorData } from '../redux/sensorSlice';
 import { Line } from 'react-chartjs-2';
@@ -88,7 +88,25 @@ try {
 
 console.log(data_sen,"data_sen")
 
+const [Sensor,setSensor] = useState([]);
+
+const get_data = async () => {
+  const api = await fetch("http://otplai.com:4004/api/get_data",{
+    method:"POST",
+    body : JSON.stringify({
+      id:""
+    })
+  })
+
+  const data = await api.json();
+  console.log(data)
+  setSensor(data);
+
+}
+
 useEffect(()=> {
+  get_data();
+
  data && dispatch(addSensorData({
       timestamp: new Date().toISOString(),
       temperature: data_sen?.temperature,
@@ -96,6 +114,8 @@ useEffect(()=> {
       // dust: data_sen?.pm
     }))
 },[data])
+
+
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -153,14 +173,14 @@ useEffect(()=> {
               </tr>
             </thead>
             <tbody>
-              {sensorData.map((ele, index) => (
+              {Sensor.map((ele, index) => (
                 <tr key={index}>
                   <td className="border px-2 py-1">{index + 1}</td>
                   <td className="border px-2 py-1">{parmas.id}</td>
-                  <td className="border px-2 py-1">{new Date(ele.timestamp).toLocaleString()}</td>
+                  <td className="border px-2 py-1">{ele.date}</td>
                   {/* <td className="border px-2 py-1">{ele.dust}</td> */}
-                  <td className="border px-2 py-1">{ele.humidity}</td>
-                  <td className="border px-2 py-1">{ele.temperature}</td>
+                  <td className="border px-2 py-1">{ele.hume}</td>
+                  <td className="border px-2 py-1">{ele.Temp}</td>
                 </tr>
               ))}
             </tbody>
