@@ -4,6 +4,7 @@ import { fetchSensorData } from '../redux/sensorSlice';
 import Sidebar from '../assets/Sidebar';
 import Header from '../assets/Header';
 import { addSensorData } from '../redux/sensorSlice';
+import * as XLSX from "xlsx";
 
 
 import { Line } from 'react-chartjs-2';
@@ -114,7 +115,15 @@ export default function Dashboard() {
     }))
   }, [data])
 
-
+  function ExportToExcel(type, fn, dl) {
+    console.log('hiii', Sensor);
+    if (Sensor.length === 0) {alert("No data"); return; };
+    var elt = document.getElementById('datatable');
+    var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
+    return dl ?
+      XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+      XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'pdf')));
+  }
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -133,22 +142,22 @@ export default function Dashboard() {
             <div className="space-y-4">
               <div className="flex justify-between border-b pb-2">
                 <span className="text-gray-500">devicename:</span>
-                <span className="font-medium">Hydrogen</span>
+                <span className="font-medium">{parmas.name}</span>
               </div>
 
               <div className="flex justify-between border-b pb-2">
                 <span className="text-gray-500">deviceid:</span>
-                <span className="font-medium">IFDAFD342424</span>
+                <span className="font-medium">{parmas.id}</span>
               </div>
 
               <div className="flex justify-between border-b pb-2">
                 <span className="text-gray-500">region:</span>
-                <span className="font-medium">NIO-NOSTH</span>
+                <span className="font-medium">NORTH</span>
               </div>
 
               <div className="flex justify-between border-b pb-2">
                 <span className="text-gray-500">category:</span>
-                <span className="font-medium">Agusty Corp.</span>
+                <span className="font-medium">Wifi</span>
               </div>
 
               <div className="flex justify-between border-b pb-2">
@@ -158,7 +167,7 @@ export default function Dashboard() {
 
               <div className="flex justify-between border-b pb-2">
                 <span className="text-gray-500">date:</span>
-                <span className="font-medium">05-21-2025</span>
+                <span className="font-medium">15-07-2025</span>
               </div>
 
               <div className="flex justify-between">
@@ -217,7 +226,12 @@ export default function Dashboard() {
         </div>
 
         <div className='bg-white p-6 rounded shadow-md my-4'>
-          <table className="min-w-full border">
+          <div className='mb-4 flex justify-end'>
+             <button onClick={() => ExportToExcel('xlsx')} className='rounded text-white bg-green-500 cursor-pointer p-2'>
+            Export
+          </button>
+          </div>
+          <table className="min-w-full border" id='datatable'>
             <thead>
               <tr>
                 <th className="border px-2 py-1">Sr. No.</th>
@@ -233,7 +247,7 @@ export default function Dashboard() {
                 <tr key={index}>
                   <td className="border px-2 py-1">{index + 1}</td>
                   <td className="border px-2 py-1">{parmas.id}</td>
-                  <td className="border px-2 py-1">{new Date(ele.date).toLocaleTimeString()}</td>
+                  <td className="border px-2 py-1">{ ele.date.split('T')[0] +"/"+new Date(ele.date).toLocaleTimeString()}</td>
                   {/* <td className="border px-2 py-1">{ele.dust}</td> */}
                   <td className="border px-2 py-1">{ele.hume}</td>
                   <td className="border px-2 py-1">{ele.Temp}</td>

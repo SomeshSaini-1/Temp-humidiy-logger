@@ -30,7 +30,7 @@ const Home = () => {
       {/* Main content */}
       <main className="flex-1 p-6 overflow-y-auto">
         {/* Header */}
-        <Header Name={"Welcome"}/>
+        <Header Name={"Welcome"} />
 
         {/* Dashboard Section */}
         <div className="bg-white rounded-xl shadow p-6 w-full mb-4">
@@ -79,49 +79,40 @@ const Home = () => {
           {devices.length === 0 ? (
             <p className="text-gray-500 mt-4">No devices available.</p>
           ) : (
-            // <div className="flex gap-6 my-4 flex-wrap">
-            //   {devices.map((device) => (
-            //     <StatCard
-            //       key={device.id}
-            //       title={device.name}
-            //       id={device.id}
-            //       onClick={() => navigate(`/dashboard/${device.id}`)}
-            //     />
-            //   ))}
-            // </div>
-               <div className="bg-white p-6 rounded-xl shadow-md overflow-auto h-[75%]">
-          <table className="min-w-full text-sm text-left border">
-            <thead className="bg-gray-100">
-              <tr>
-                <th className="border px-3 py-2">Sr. No.</th>
-                <th className="border px-3 py-2">Device ID</th>
-                <th className="border px-3 py-2">Date</th>
-                <th className="border px-3 py-2">Device Name</th>
-                <th className="border px-3 py-2">Category</th>
-                <th className="border px-3 py-2">Region</th>
-                <th className="border px-3 py-2">Status</th>
-                <th className="border px-3 py-2">View Device</th>
-              </tr>
-            </thead>
-            <tbody>
-              {devices.map((ele, index) => (
-                <tr key={index} className="hover:bg-gray-50">
-                  <td className="border px-3 py-2">{index + 1}</td>
-                  <td className="border px-3 py-2">{ele.id}</td>
-                  <td className="border px-3 py-2">{ele.date || '-'}</td>
-                  <td className="border px-3 py-2">{ele.name}</td>
-                  <td className="border px-3 py-2">{ele.category}</td>
-                  <td className="border px-3 py-2">{ele.region}</td>
-                  <td className='border px-3 py-2'>{ele.status}</td>
-                  <td className="border px-3 py-2">
-                    <button onClick={() => navigate(`/dashboard/${ele.id}/${ele.name}`)} className='rounded text-white bg-green-500 cursor-pointer p-2'>View Device</button>
-                  </td>
-                 
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+
+            <div className="bg-white p-6 rounded-xl shadow-md overflow-auto h-[75%]">
+              <table className="min-w-full text-sm text-left border">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="border px-3 py-2">Sr. No.</th>
+                    <th className="border px-3 py-2">Device ID</th>
+                    <th className="border px-3 py-2">Date</th>
+                    <th className="border px-3 py-2">Device Name</th>
+                    <th className="border px-3 py-2">Category</th>
+                    <th className="border px-3 py-2">Region</th>
+                    <th className="border px-3 py-2">Status</th>
+                    <th className="border px-3 py-2">View Device</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {devices.map((ele, index) => (
+                    <tr key={index} className="hover:bg-gray-50">
+                      <td className="border px-3 py-2">{index + 1}</td>
+                      <td className="border px-3 py-2">{ele.id}</td>
+                      <td className="border px-3 py-2">{ele.date || '-'}</td>
+                      <td className="border px-3 py-2">{ele.name}</td>
+                      <td className="border px-3 py-2">{ele.category}</td>
+                      <td className="border px-3 py-2">{ele.region}</td>
+                      <td className='border px-3 py-2'>{ele.status}</td>
+                      <td className="border px-3 py-2">
+                        <button onClick={() => navigate(`/dashboard/${ele.id}/${ele.name}`)} className='rounded text-white bg-green-500 cursor-pointer p-2'>View Device</button>
+                      </td>
+
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </main>

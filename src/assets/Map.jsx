@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { GoogleMap, Marker, LoadScript } from "@react-google-maps/api";
 
-const Map = () => {
+const Map = (height="500px") => {
   const defaultCenter = {
     lat: 26.855980263390784,
     lng: 75.78391780923478,
@@ -24,7 +24,7 @@ const Map = () => {
     <div>
       <LoadScript googleMapsApiKey={googleMapsApiKey}>
         <GoogleMap
-          mapContainerClassName="w-full h-[500px] rounded-xl shadow"
+          mapContainerClassName={`w-full h-[${height}] rounded-xl shadow`}
           zoom={10}
           center={defaultCenter}
         >
