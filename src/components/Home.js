@@ -45,23 +45,23 @@ const Home = () => {
             <div className="flex flex-col gap-6 items-center">
               <div className="text-left min-w-[160px]">
                 <h3 className="text-lg font-semibold text-gray-700">Total Devices</h3>
-                <p className="text-4xl font-extrabold text-black mt-2">357+</p>
+                <p className="text-4xl font-extrabold text-black mt-2">2+</p>
               </div>
 
               <div className="flex-1 min-w-[220px] bg-green-50 border border-green-200 rounded-xl p-4 relative">
                 <h4 className="text-gray-700 text-sm mb-1 font-semibold">Active Devices</h4>
                 <div className="text-green-600 text-sm font-semibold flex items-center">
-                  <FaChartLine className="mr-1" /> 32.76%
+                  <FaChartLine className="mr-1" /> 50%
                 </div>
-                <div className="mt-4 w-full h-12 bg-green-200 rounded-xl opacity-60 flex items-center justify-center text-xl font-bold text-green-900">123</div>
+                <div className="mt-4 w-full h-12 bg-green-200 rounded-xl opacity-60 flex items-center justify-center text-xl font-bold text-green-900">1</div>
               </div>
 
               <div className="flex-1 min-w-[220px] bg-red-50 border border-red-200 rounded-xl p-4 relative">
                 <h4 className="text-gray-700 text-sm mb-1 font-semibold">Inactive Devices</h4>
                 <div className=" text-red-600 text-sm font-semibold flex items-center">
-                  <FaChartLine className="mr-1" /> 32.76%
+                  <FaChartLine className="mr-1" /> 50%
                 </div>
-                <div className="mt-4 w-full h-12 bg-red-200 rounded-xl opacity-60 flex items-center justify-center text-xl font-bold text-red-900">234</div>
+                <div className="mt-4 w-full h-12 bg-red-200 rounded-xl opacity-60 flex items-center justify-center text-xl font-bold text-red-900">1</div>
               </div>
             </div>
 
@@ -99,6 +99,7 @@ const Home = () => {
                 <th className="border px-3 py-2">Device Name</th>
                 <th className="border px-3 py-2">Category</th>
                 <th className="border px-3 py-2">Region</th>
+                <th className="border px-3 py-2">Status</th>
                 <th className="border px-3 py-2">View Device</th>
               </tr>
             </thead>
@@ -111,6 +112,7 @@ const Home = () => {
                   <td className="border px-3 py-2">{ele.name}</td>
                   <td className="border px-3 py-2">{ele.category}</td>
                   <td className="border px-3 py-2">{ele.region}</td>
+                  <td className='border px-3 py-2'>{ele.status}</td>
                   <td className="border px-3 py-2">
                     <button onClick={() => navigate(`/dashboard/${ele.id}/${ele.name}`)} className='rounded text-white bg-green-500 cursor-pointer p-2'>View Device</button>
                   </td>

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSensorData } from '../redux/sensorSlice';
-import { Line } from 'react-chartjs-2';
 import Sidebar from '../assets/Sidebar';
 import Header from '../assets/Header';
+import { addSensorData } from '../redux/sensorSlice';
+
+
+import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,19 +17,18 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { addSensorData } from '../redux/sensorSlice';
-
-
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 import { useContext } from 'react';
-import {MqttContext} from '../assets/Mqtt';
+import { MqttContext } from '../assets/Mqtt';
 import { useParams } from 'react-router-dom';
+
+import Chart from '../assets/Chart';
 
 export default function Dashboard() {
   const dispatch = useDispatch();
   const parmas = useParams()
-  console.log(parmas.id,parmas.name)
-  
+  console.log(parmas.id, parmas.name)
+  const [Sensor, setSensor] = useState([]);
   const { setTopic, data } = useContext(MqttContext);
 
   useEffect(() => {
@@ -39,29 +41,24 @@ export default function Dashboard() {
     dispatch(fetchSensorData());
   }, [dispatch]);
 
-  console.log(sensorData,data)
+  console.log(sensorData, data)
 
   const chartData = {
-    labels: sensorData.map((data) => new Date(data.timestamp).toLocaleTimeString()),
+    labels: Sensor.map((data) => new Date(data.date).toLocaleTimeString()),
     datasets: [
       {
         label: 'Temperature (°C)',
-        data: sensorData.map((data) => data.temperature),
+        data: Sensor.map((data) => data.Temp),
         borderColor: 'rgb(255, 99, 132)',
         backgroundColor: 'rgba(255, 99, 132, 0.5)',
       },
       {
         label: 'Humidity (%RH)',
-        data: sensorData.map((data) => data.humidity),
+        data: Sensor.map((data) => data.hume),
         borderColor: 'rgb(54, 162, 235)',
         backgroundColor: 'rgba(54, 162, 235, 0.5)',
       },
-      // {
-      //   label: 'Dust Particles (µg/m³)',
-      //   data: sensorData.map((data) => data.dust),
-      //   borderColor: 'rgb(163, 192, 75)',
-      //   backgroundColor: 'rgba(163, 192, 75, 0.5)',
-      // },
+
     ],
   };
 
@@ -69,51 +66,50 @@ export default function Dashboard() {
     responsive: true,
     plugins: {
       legend: { position: 'top' },
-      title: { display: true, text: 'Environmental Data Trends' },
+      title: { display: true, text: 'Environmental All Data ' },
     },
   };
-  
-// let data_sen = data && JSON.parse(data?.payload)
 
-let data_sen = null;
-try {
-  if (data?.payload) {
-    data_sen = JSON.parse(data.payload);
+  // let data_sen = data && JSON.parse(data?.payload)
+
+  let data_sen = null;
+  try {
+    if (data?.payload) {
+      data_sen = JSON.parse(data.payload);
+    }
+  } catch (err) {
+    console.error("❌ Failed to parse MQTT payload:", data.payload);
+    console.error(err);
   }
-} catch (err) {
-  console.error("❌ Failed to parse MQTT payload:", data.payload);
-  console.error(err);
-}
 
 
-console.log(data_sen,"data_sen")
+  console.log(data_sen, "data_sen")
 
-const [Sensor,setSensor] = useState([]);
 
-const get_data = async () => {
-  const api = await fetch("http://otplai.com:4004/api/get_data",{
-    method:"POST",
-    body : JSON.stringify({
-      id:""
+  const get_data = async () => {
+    const api = await fetch("http://otplai.com:4004/api/get_data", {
+      method: "POST",
+      body: JSON.stringify({
+        id: parmas.id
+      })
     })
-  })
 
-  const data = await api.json();
-  console.log(data)
-  setSensor(data);
+    const data = await api.json();
+    console.log(data)
+    setSensor(data);
 
-}
+  }
 
-useEffect(()=> {
-  get_data();
+  useEffect(() => {
+    get_data();
 
- data && dispatch(addSensorData({
+    data && dispatch(addSensorData({
       timestamp: new Date().toISOString(),
       temperature: data_sen?.temperature,
       humidity: data_sen?.humidity,
       // dust: data_sen?.pm
     }))
-},[data])
+  }, [data])
 
 
 
@@ -123,39 +119,96 @@ useEffect(()=> {
       <Sidebar />
       {/* Main content */}
       <main className="flex-1 p-6 overflow-y-auto">
-     
-     <Header Name={parmas.name+"-"+parmas.id}/>
 
-        {/* Filter */}
-        <div className="flex items-center space-x-4 mb-4">
-          <label className="text-sm font-medium">Parameter:</label>
-          <select className="border rounded px-2 py-1 text-sm">
-            {/* <option>Dust Particles Concentration</option> */}
-            <option>HumidityConcentration</option>
-            <option>Temperature Concentration</option>
-          </select>
+        <Header Name={parmas.name + "-" + parmas.id} />
 
-        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* Device Information Card */}
+          <div className="col-span-1 bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-lg font-semibold mb-4 text-gray-700">Device Information</h3>
 
-        {/* Grid layout */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Metric Cards */}
-          {/* <div className="col-span-1 bg-white p-4 rounded shadow">
-            <div className="text-sm text-gray-500 mb-1">Dust Particles</div>
-            <div className="w-full h-32 bg-gray-200 rounded text-2xl font-semibold flex items-center justify-center">{data_sen?.pm || "--"} µg/m³</div>
-          </div> */}
-          <div className="col-span-1 bg-white p-4 rounded shadow">
-            <div className="text-sm text-gray-500 mb-1">Humidity</div>
-            <div className="w-full h-32 bg-gray-200 rounded text-2xl font-semibold flex items-center justify-center">{data_sen?.humidity ||"--"} %RH</div>
+            <div className="space-y-4">
+              <div className="flex justify-between border-b pb-2">
+                <span className="text-gray-500">devicename:</span>
+                <span className="font-medium">Hydrogen</span>
+              </div>
+
+              <div className="flex justify-between border-b pb-2">
+                <span className="text-gray-500">deviceid:</span>
+                <span className="font-medium">IFDAFD342424</span>
+              </div>
+
+              <div className="flex justify-between border-b pb-2">
+                <span className="text-gray-500">region:</span>
+                <span className="font-medium">NIO-NOSTH</span>
+              </div>
+
+              <div className="flex justify-between border-b pb-2">
+                <span className="text-gray-500">category:</span>
+                <span className="font-medium">Agusty Corp.</span>
+              </div>
+
+              <div className="flex justify-between border-b pb-2">
+                <span className="text-gray-500">comment:</span>
+                <span className="font-medium">LORA Protocol</span>
+              </div>
+
+              <div className="flex justify-between border-b pb-2">
+                <span className="text-gray-500">date:</span>
+                <span className="font-medium">05-21-2025</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span className="text-gray-500">status:</span>
+                <span className="font-medium text-green-500">Deployed</span>
+              </div>
+            </div>
           </div>
-          <div className="col-span-1 bg-white p-4 rounded shadow">
-            <div className="text-sm text-gray-500 mb-2">Temperature </div>
-            <div className="w-full h-32 bg-gray-200 rounded text-2xl font-semibold flex items-center justify-center">{data_sen?.temperature || "--"} °C </div>
+
+          {/* Additional Metrics Cards */}
+          <div className="col-span-1 space-y-4">
+            <div className="col-span-1 space-y-4">
+              {/* Humidity Card */}
+              <div className="bg-white p-4 rounded-lg shadow-md border-l-4 border-blue-500">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-500">Humidity</h4>
+                    <p className="text-2xl font-semibold text-gray-800">
+                      {data_sen?.humidity || "--"} <span className="text-lg text-gray-500">%RH</span>
+                    </p>
+                  </div>
+                </div>
+                <div className="h-32">
+                  <Chart
+                    sensorData={sensorData.map((data) => data.humidity)}
+                    labelname={"Humidity"}
+                    chartColor="#3B82F6" // Blue color for humidity
+                  />
+                </div>
+              </div>
+
+              {/* Temperature Card */}
+              <div className="bg-white p-4 rounded-lg shadow-md border-l-4 border-red-500">
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-500">Temperature</h4>
+                    <p className="text-2xl font-semibold text-gray-800">
+                      {data_sen?.temperature || "--"} <span className="text-lg text-gray-500">°C</span>
+                    </p>
+                  </div>
+
+                </div>
+                <div className="h-32">
+                  <Chart
+                    sensorData={sensorData.map((data) => data.temperature)}
+                    labelname={"Temperature"}
+                    chartColor="#EF4444" // Red color for temperature
+                  />
+                </div>
+              </div>
+            </div>
           </div>
-
         </div>
-
-
         <div className="bg-white p-6 rounded shadow-md my-4 ">
           <Line data={chartData} options={options} />
         </div>
@@ -191,27 +244,3 @@ useEffect(()=> {
   );
 }
 
-
-
-// import React, { useContext, useEffect } from 'react';
-// import { MqttContext } from '../assets/Mqtt'; // Adjust the path as needed
-
-// const MyMqttComponent = () => {
-//   const { topic, setTopic, data } = useContext(MqttContext);
-
-//   useEffect(() => {
-//     setTopic('my/topic'); // Subscribe to a topic when component mounts
-//   }, [setTopic]);
-
-//   return (
-//     <div>
-//       <h2>Subscribed Topic: {topic}</h2>
-//       <div>
-//         <strong>Latest Message:</strong>
-//         <pre>{data ? JSON.stringify(data, null, 2) : 'No data yet'}</pre>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default MyMqttComponent;
