@@ -24,7 +24,7 @@ const Map = (height="500px") => {
     <div>
       <LoadScript googleMapsApiKey={googleMapsApiKey}>
         <GoogleMap
-          mapContainerClassName={`w-full h-[${height}] rounded-xl shadow`}
+          mapContainerClassName={`w-full h-[500px] rounded-xl shadow`}
           zoom={10}
           center={defaultCenter}
         >

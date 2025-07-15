@@ -11,10 +11,10 @@ function Downdata() {
   return (
     <ul className="absolute top-14 right-2 mt-2 bg-white shadow-md rounded-md w-48 z-[99]">
       <li className="text-left px-4 py-2">Welcome !</li>
-      <li className="text-center p-2 cursor-pointer" onClick={() => navigate('/setting')}>
+      <li className="text-center p-2 cursor-pointer" onClick={() => navigate('/Support')}>
         <Settings className="inline mr-2" /> Settings
       </li>
-      <li className="text-center p-2 border-b cursor-pointer" onClick={() => navigate('/support')}>
+      <li className="text-center p-2 border-b cursor-pointer" onClick={() => navigate('/Support')}>
         <BiSupport className="inline mr-2" /> Support
       </li>
       <li className="text-center p-2 text-red-500 cursor-pointer" onClick={() => navigate('/login')}>
@@ -37,7 +37,7 @@ const Header = ({Name}) => {
           className="flex items-center justify-center cursor-pointer"
           onClick={() => setshow(!show)}
         >
-          <User2Icon className="w-8 h-8 bg-gray-300 rounded-full mr-2" />
+          <User2Icon className="w-10 h-10 bg-blue-100 text-blue-600 p-2 rounded-full mr-3 flex-shrink-0" />
           <ChevronDown />
         </div>
 

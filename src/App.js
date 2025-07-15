@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Home from './components/Home';
 import AddDevice from './components/AddDevice';
 import Dashboard from './components/Dashboard';
+import Support from './components/Support'
 import './App.css';
 
 const ProtectedRoute = ({ children }) => {
@@ -34,6 +35,17 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          
+          <Route
+            path="/Support"
+            element={
+              <ProtectedRoute>
+                <Support />
+              </ProtectedRoute>
+            }
+          />
+          
           <Route
             path="/add-device"
             element={
