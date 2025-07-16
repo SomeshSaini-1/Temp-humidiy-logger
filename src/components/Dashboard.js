@@ -112,7 +112,7 @@ export default function Dashboard() {
 
   useEffect(() => {
 
-    get_data();
+    count == 1 && get_data();
 
     data && dispatch(addSensorData({
       timestamp: new Date().toISOString(),
