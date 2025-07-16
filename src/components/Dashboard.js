@@ -253,7 +253,15 @@ export default function Dashboard() {
                 <tr key={index}>
                   <td className="border px-2 py-1">{index + 1}</td>
                   <td className="border px-2 py-1">{parmas.id}</td>
-                  <td className="border px-2 py-1">{ ele.date.split('T')[0] +"/"+new Date(ele.date).toLocaleTimeString()}</td>
+                  {/* <td className="border px-2 py-1">{ ele.date.split('T')[0] +"/"+new Date(ele.date).toLocaleTimeString()}</td> */}
+                  <td className="border px-2 py-1">
+  {
+    ele.date.includes('T') && ele.date.endsWith('Z')
+      ? ele.date.split('T')[0] + " / " + new Date(ele.date).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" })
+      : ele.date
+  }
+</td>
+
                   {/* <td className="border px-2 py-1">{ele.dust}</td> */}
                   <td className="border px-2 py-1">{ele.hume}</td>
                   <td className="border px-2 py-1">{ele.Temp}</td>
