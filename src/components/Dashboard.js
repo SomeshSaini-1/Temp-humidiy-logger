@@ -86,6 +86,7 @@ export default function Dashboard() {
 
   console.log(data_sen, "data_sen")
 
+  const [count,setcount] = useState(1)
 
   const get_data = async () => {
     const api = await fetch("http://otplai.com:4004/api/get_data", {
@@ -94,7 +95,8 @@ export default function Dashboard() {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        id: parmas.id
+        id: parmas.id,
+        page: count
       })
     })
 
@@ -104,8 +106,12 @@ export default function Dashboard() {
 
   }
 
+  useEffect(()=>{
+     get_data();
+  },[count])
+
   useEffect(() => {
-    get_data();
+   
 
     data && dispatch(addSensorData({
       timestamp: new Date().toISOString(),
@@ -254,7 +260,12 @@ export default function Dashboard() {
                 </tr>
               ))}
             </tbody>
+            
           </table>
+              <div className='mt-2'>
+                <button onClick={()=> {setcount(count - 1)}} className='bg-green-400 text-white px-2  rounded hover:bg-green-500 mr-4'>prev</button>
+                <button onClick={()=> {setcount(count + 1)}} className='bg-green-400 text-white px-2  rounded hover:bg-green-500'>next</button>
+              </div>
         </div>
       </main>
     </div>
