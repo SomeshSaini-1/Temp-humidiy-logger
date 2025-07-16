@@ -4,12 +4,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const fetchSensorData = createAsyncThunk('sensors/fetchSensorData', async () => {
   // Simulate API response
   return [
-    {
-      timestamp: new Date().toISOString(),
-      temperature: 25.5,
-      humidity: 60,
-      dust: 45,
-    },
+    // {
+    //   timestamp: new Date().toISOString(),
+    //   temperature: 0,
+    //   humidity: 0,
+    //   dust: 0,
+    // },
     // {
     //   timestamp: new Date(Date.now() - 3600000).toISOString(),
     //   temperature: 24.8,

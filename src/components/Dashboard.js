@@ -86,7 +86,7 @@ export default function Dashboard() {
 
   console.log(data_sen, "data_sen")
 
-  const [count,setcount] = useState(1)
+  const [count, setcount] = useState(1)
 
   const get_data = async () => {
     const api = await fetch("http://otplai.com:4004/api/get_data", {
@@ -106,12 +106,13 @@ export default function Dashboard() {
 
   }
 
-  useEffect(()=>{
-     get_data();
-  },[count])
+  useEffect(() => {
+    get_data();
+  }, [count])
 
   useEffect(() => {
-   
+
+    get_data();
 
     data && dispatch(addSensorData({
       timestamp: new Date().toISOString(),
@@ -123,7 +124,7 @@ export default function Dashboard() {
 
   function ExportToExcel(type, fn, dl) {
     console.log('hiii', Sensor);
-    if (Sensor.length === 0) {alert("No data"); return; };
+    if (Sensor.length === 0) { alert("No data"); return; };
     var elt = document.getElementById('datatable');
     var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
     return dl ?
@@ -233,9 +234,9 @@ export default function Dashboard() {
 
         <div className='bg-white p-6 rounded shadow-md my-4'>
           <div className='mb-4 flex justify-end'>
-             <button onClick={() => ExportToExcel('xlsx')} className='rounded text-white bg-green-500 cursor-pointer p-2'>
-            Export
-          </button>
+            <button onClick={() => ExportToExcel('xlsx')} className='rounded text-white bg-green-500 cursor-pointer p-2'>
+              Export
+            </button>
           </div>
           <table className="min-w-full border" id='datatable'>
             <thead>
@@ -255,12 +256,12 @@ export default function Dashboard() {
                   <td className="border px-2 py-1">{parmas.id}</td>
                   {/* <td className="border px-2 py-1">{ ele.date.split('T')[0] +"/"+new Date(ele.date).toLocaleTimeString()}</td> */}
                   <td className="border px-2 py-1">
-  {
-    ele.date.includes('T') && ele.date.endsWith('Z')
-      ? ele.date.split('T')[0] + " / " + new Date(ele.date).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" })
-      : ele.date
-  }
-</td>
+                    {
+                      ele.date.includes('T') && ele.date.endsWith('Z')
+                        ? ele.date.split('T')[0] + " / " + new Date(ele.date).toLocaleTimeString("en-IN", { timeZone: "Asia/Kolkata" })
+                        : ele.date
+                    }
+                  </td>
 
                   {/* <td className="border px-2 py-1">{ele.dust}</td> */}
                   <td className="border px-2 py-1">{ele.hume}</td>
@@ -268,12 +269,12 @@ export default function Dashboard() {
                 </tr>
               ))}
             </tbody>
-            
+
           </table>
-              <div className='mt-2'>
-                <button onClick={()=> {setcount(count - 1)}} className='bg-green-400 text-white px-2  rounded hover:bg-green-500 mr-4'>prev</button>
-                <button onClick={()=> {setcount(count + 1)}} className='bg-green-400 text-white px-2  rounded hover:bg-green-500'>next</button>
-              </div>
+          <div className='mt-2'>
+            <button onClick={() => { setcount(count - 1) }} className='bg-green-400 text-white px-2  rounded hover:bg-green-500 mr-4'>prev</button>
+            <button onClick={() => { setcount(count + 1) }} className='bg-green-400 text-white px-2  rounded hover:bg-green-500'>next</button>
+          </div>
         </div>
       </main>
     </div>
