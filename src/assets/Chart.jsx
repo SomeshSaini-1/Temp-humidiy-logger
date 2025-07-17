@@ -10,23 +10,6 @@ const Chart = ({ sensorData = [],timestamp = [] }) => {
   //   return d.toLocaleTimeString();
   // });
 
-  const [t, setT] = useState([]);
-
-// When new sensorData arrives, update the time list
-// useEffect(() => {
-//   if (sensorData.length === 0) return;
-
-//   const now = new Date();
-//   const newT = [...t];
-
-//   // Only add time for new data points
-//   const newLength = sensorData.length - t.length;
-//   for (let i = 0; i < newLength; i++) {
-//     newT.push(new Date(now - (newLength - i - 1) * 1000));
-//   }
-
-//   setT(newT);
-// }, [sensorData]);
 
 // // Use t for labels
 const labels = timestamp.map(time => time);

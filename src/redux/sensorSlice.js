@@ -29,7 +29,7 @@ const sensorSlice = createSlice({
   name: 'sensors',
   initialState: {
     devices: [
-  { name: "Am Sensor new", id: "348518941934",date:new Date().toJSON().slice(0, 10) , status:"Active",category:"Wifi",region:"NORTH" },
+  { name: "OTPL-WTH-001", id: "348518941934",date:new Date().toJSON().slice(0, 10) , status:"Active",category:"Wifi",region:"NORTH" },
    { name: "Testing", id: "A085E3F17FF0",date:new Date().toJSON().slice(0, 10) , status:"Deactive",category:"Wifi",region:"NORTH" }
  
 ],
