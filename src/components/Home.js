@@ -66,7 +66,7 @@ const Home = () => {
             </div>
 
             {/* Map */}
-            <div className="flex-1 min-w-[300px]">
+            <div className="flex-1 min-w-[300px] ">
               <Map />
             </div>
           </div>

@@ -38,6 +38,7 @@ const MqttProvider = ({ children }) => {
     useEffect(() => {
         const client = clientRef.current;
         if (client && topic) {
+            
             client.subscribe(topic, (error) => {
                 if (error) {
                     console.log('Error subscribing:', error);

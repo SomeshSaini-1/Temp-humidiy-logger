@@ -5,24 +5,13 @@ import Sidebar from '../assets/Sidebar';
 import Header from '../assets/Header';
 import { addSensorData } from '../redux/sensorSlice';
 import * as XLSX from "xlsx";
+import Mainchart from '../assets/Mainchart';
+import Map from '../assets/Map';
 
 
-import { Line } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 import { useContext } from 'react';
 import { MqttContext } from '../assets/Mqtt';
 import { useParams } from 'react-router-dom';
-
 import Chart from '../assets/Chart';
 
 export default function Dashboard() {
@@ -44,34 +33,6 @@ export default function Dashboard() {
 
   console.log(sensorData, data)
 
-  const chartData = {
-    labels: Sensor.map((data) => new Date(data.date).toLocaleTimeString()),
-    datasets: [
-      {
-        label: 'Temperature (°C)',
-        data: Sensor.map((data) => data.Temp),
-        borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-      },
-      {
-        label: 'Humidity (%RH)',
-        data: Sensor.map((data) => data.hume),
-        borderColor: 'rgb(54, 162, 235)',
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-      },
-
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: { position: 'top' },
-      title: { display: true, text: 'Environmental All Data ' },
-    },
-  };
-
-  // let data_sen = data && JSON.parse(data?.payload)
 
   let data_sen = null;
   try {
@@ -115,7 +76,7 @@ export default function Dashboard() {
     count == 1 && get_data();
 
     data && dispatch(addSensorData({
-      timestamp: new Date().toISOString(),
+      timestamp: data_sen?.time,
       temperature: data_sen?.temperature,
       humidity: data_sen?.humidity,
       // dust: data_sen?.pm
@@ -141,7 +102,7 @@ export default function Dashboard() {
 
         <Header Name={parmas.name + "-" + parmas.id} />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Device Information Card */}
           <div className="col-span-1 bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold mb-4 text-gray-700">Device Information</h3>
@@ -200,6 +161,7 @@ export default function Dashboard() {
                 <div className="h-32">
                   <Chart
                     sensorData={sensorData.map((data) => data.humidity)}
+                    timestamp={sensorData.map((data) => data.timestamp)}
                     labelname={"Humidity"}
                     chartColor="#3B82F6" // Blue color for humidity
                   />
@@ -220,6 +182,7 @@ export default function Dashboard() {
                 <div className="h-32">
                   <Chart
                     sensorData={sensorData.map((data) => data.temperature)}
+                    timestamp={sensorData.map((data) => data.timestamp)}
                     labelname={"Temperature"}
                     chartColor="#EF4444" // Red color for temperature
                   />
@@ -227,9 +190,15 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+
+          <div className='col-span-1'>
+            <Map height={440} />
+          </div>
         </div>
+
         <div className="bg-white p-6 rounded shadow-md my-4 ">
-          <Line data={chartData} options={options} />
+          
+          <Mainchart sensorData={Sensor}/>
         </div>
 
         <div className='bg-white p-6 rounded shadow-md my-4'>

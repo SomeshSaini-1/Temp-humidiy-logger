@@ -1,17 +1,41 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import ApexCharts from 'react-apexcharts';
 
-const Chart = ({ sensorData = [] }) => {
-  // Generate time labels for x-axis (current time minus n seconds)
-  const labels = sensorData.map((_, i) => {
-    const d = new Date(Date.now() - (sensorData.length - i - 1) * 1000);
-    return d.toLocaleTimeString();
-  });
+const Chart = ({ sensorData = [],timestamp = [] }) => {
+  // // Generate time labels for x-axis (current time minus n seconds)
+
+  
+  // const labels = sensorData.map((_, i) => {
+  //   const d = new Date(Date.now() - (sensorData.length - i - 1) * 1000);
+  //   return d.toLocaleTimeString();
+  // });
+
+  const [t, setT] = useState([]);
+
+// When new sensorData arrives, update the time list
+// useEffect(() => {
+//   if (sensorData.length === 0) return;
+
+//   const now = new Date();
+//   const newT = [...t];
+
+//   // Only add time for new data points
+//   const newLength = sensorData.length - t.length;
+//   for (let i = 0; i < newLength; i++) {
+//     newT.push(new Date(now - (newLength - i - 1) * 1000));
+//   }
+
+//   setT(newT);
+// }, [sensorData]);
+
+// // Use t for labels
+const labels = timestamp.map(time => time);
+
 
   const chartOptions = {
     chart: {
       type: 'line',
-      toolbar: { show: false },
+      toolbar: { show: false }, 
       zoom: { enabled: false },
     },
     stroke: {
