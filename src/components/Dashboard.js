@@ -115,14 +115,14 @@ export default function Dashboard() {
                 <span className="font-medium">15-07-2025</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">Status:</span>
-                <span className="font-medium text-green-500 capitalize">
-                  {statusTopic && data[statusTopic] ? data[statusTopic] : '--'}
+                <span className="text-gray-500">Mode:</span>
+                <span className="font-medium capitalize">
+                  Test
                 </span>
               </div>
               <div className="flex justify-between border-b pb-2">
-                <span className="text-gray-500">Comment:</span>
-                <span className="font-medium">LORA Protocol</span>
+                <span className="text-gray-500">City:</span>
+                <span className="font-medium"> Jaiput</span>
               </div>
             </div>
           </div>

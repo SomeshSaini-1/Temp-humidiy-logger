@@ -24,14 +24,14 @@ function Downdata() {
   );
 }
 
-const Header = ({Name}) => {
+const Header = ({icon,Name}) => {
   const [show, setshow] = useState(false);
 
   return (
     <>
       <div className="flex justify-between items-center mb-6 border py-4 px-2 rounded-xl relative">
         <div>
-          <div className="text-2xl font-bold">{Name}</div>
+          <div className="text-2xl font-bold flex gap-4 items-center">{icon} {Name}</div>
         </div>
         <div
           className="flex items-center justify-center cursor-pointer"

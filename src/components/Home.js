@@ -54,7 +54,7 @@ const Home = () => {
                 <p className="text-4xl font-extrabold text-black mt-2">{devices.length || '0'}</p>
               </div>
               <div className="flex-1 min-w-[220px] bg-green-50 border border-green-200 rounded-xl p-4 relative">
-                <h4 className="text-gray-700 text-sm mb-1 font-semibold">Active Devices</h4>
+                <h4 className="text-gray-700 text-sm mb-1 font-semibold">Connected Devices</h4>
                 <div className="text-green-600 text-sm font-semibold flex items-center">
                   <FaChartLine className="mr-1" />{' '}
                   {devices.length ? Math.round((activeDevices / devices.length) * 100) : 0}%
@@ -64,7 +64,7 @@ const Home = () => {
                 </div>
               </div>
               <div className="flex-1 min-w-[220px] bg-red-50 border border-red-200 rounded-xl p-4 relative">
-                <h4 className="text-gray-700 text-sm mb-1 font-semibold">Inactive Devices</h4>
+                <h4 className="text-gray-700 text-sm mb-1 font-semibold">Disconnected Devices</h4>
                 <div className="text-red-600 text-sm font-semibold flex items-center">
                   <FaChartLine className="mr-1" />{' '}
                   {devices.length ? Math.round((inactiveDevices / devices.length) * 100) : 0}%
@@ -113,10 +113,10 @@ const Home = () => {
                           onClick={() =>
                             ele.id && ele.name && navigate(`/dashboard/${ele.id}/${ele.name}`)
                           }
-                          className="rounded text-white bg-green-500 cursor-pointer p-2"
+                          className="rounded text-white bg-blue-500 cursor-pointer py-1 px-2 text-sm"
                           disabled={!ele.id || !ele.name}
                         >
-                          View Device
+                          View device
                         </button>
                       </td>
                     </tr>
