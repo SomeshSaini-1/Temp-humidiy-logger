@@ -62,8 +62,18 @@ const MqttProvider = ({ children }) => {
     setTopics((prev) => (prev.includes(newTopic) ? prev : [...prev, newTopic]));
   };
 
+  const publisher = (topic,data) => {
+      console.log(topic,data);
+       const client = clientRef.current;
+        client.publish(topic,String(data),{ qos: 1, retain: false }, (err) => {
+          if (err) console.error(`❌ Error subscribing to ${topic}:`, err);
+          else console.log(`✅ publish to ${topic}`);
+        });
+
+  }
+
   return (
-    <MqttContext.Provider value={{ topics, subscribeToTopic, data, client: clientRef.current }}>
+    <MqttContext.Provider value={{ topics, subscribeToTopic, data, client: clientRef.current,publisher }}>
       {children}
     </MqttContext.Provider>
   );

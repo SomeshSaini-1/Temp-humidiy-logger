@@ -15,7 +15,7 @@ const Home = () => {
   // MQTT Subscription
   useEffect(() => {
     const subscriptions = devices.map((ele) =>
-      subscribeToTopic(`am_sensor/${ele.id}/status`)
+      subscribeToTopic(`am_sensor/${ele.deviceid}/status`)
     );
     return () => {
       // Unsubscribe logic if supported by MqttContext
@@ -34,8 +34,8 @@ const Home = () => {
   };
 
   // Calculate device counts
-  const activeDevices = devices.filter((ele) => getStatus(ele.id) === 'connected').length;
-  const inactiveDevices = devices.length - activeDevices;
+  const inactiveDevices = devices.filter((ele) => getStatus(ele.deviceid) === 'Disconnected').length;
+  const activeDevices = devices.length - inactiveDevices;
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -102,19 +102,19 @@ const Home = () => {
                   {devices.map((ele, index) => (
                     <tr key={index} className="hover:bg-gray-50">
                       <td className="border px-3 py-2">{index + 1}</td>
-                      <td className="border px-3 py-2">{ele.id || '--'}</td>
+                      <td className="border px-3 py-2">{ele.deviceid || '--'}</td>
                       <td className="border px-3 py-2">{ele.date || '--'}</td>
-                      <td className="border px-3 py-2">{ele.name || '--'}</td>
+                      <td className="border px-3 py-2">{ele.devicename || '--'}</td>
                       <td className="border px-3 py-2">{ele.category || '--'}</td>
                       <td className="border px-3 py-2">{ele.region || '--'}</td>
-                      <td className="border px-3 py-2 capitalize">{getStatus(ele.id)}</td>
+                      <td className="border px-3 py-2 capitalize">{getStatus(ele.deviceid)}</td>
                       <td className="border px-3 py-2">
                         <button
                           onClick={() =>
-                            ele.id && ele.name && navigate(`/dashboard/${ele.id}/${ele.name}`)
+                            ele.deviceid && ele.devicename && navigate(`/dashboard/${ele.deviceid}/${ele.devicename}`)
                           }
                           className="rounded text-white bg-blue-500 cursor-pointer py-1 px-2 text-sm"
-                          disabled={!ele.id || !ele.name}
+                          disabled={!ele.deviceid || !ele.devicename}
                         >
                           View device
                         </button>

@@ -15,7 +15,7 @@ const AddDevice = () => {
     category: "",
     comment: "",
     date: "",
-    // status: "",
+    status: "",
     Organization :"",
     City:"",
     Mode:"",
@@ -36,13 +36,16 @@ const AddDevice = () => {
     // dispatch(addDevice({ id: device.deviceid, name: device.devicename, date: device.date }));
     dispatch(addDevice(device));
     setDevice({
-      devicename: "",
-      deviceid: "",
-      region: "",
-      category: "",
-      comment: "",
-      date: "",
-      status: "",
+    devicename: "",
+    deviceid: "",
+    region: "",
+    category: "",
+    comment: "",
+    date: "",
+    status: "",
+    Organization :"",
+    City:"",
+    Mode:"",
     });
     setShow(false);
   };
@@ -114,7 +117,10 @@ const AddDevice = () => {
                 value={device.region}
                 onChange={handleChange}
                 className="p-2 border rounded"
+                required
+
               >
+                <option defaultValue={""} hidden>Select a option</option>
                 {
                   ["North", "Northeast", "East", "West", "South"].map(ele => (
                     <option value={ele}>{ele}</option>
@@ -131,6 +137,7 @@ const AddDevice = () => {
                 value={device.City}
                 onChange={handleChange}
                 className="p-2 border rounded"
+                required
               />
                
             </div>
@@ -143,6 +150,7 @@ const AddDevice = () => {
                 value={device.Organization}
                 onChange={handleChange}
                 className="p-2 border rounded"
+                required
               />
                
             </div>
@@ -155,6 +163,7 @@ const AddDevice = () => {
                 value={device.Mode}
                 onChange={handleChange}
                 className="p-2 border rounded"
+                required
               >
                 <option selected hidden defaultValue={""}>Select Mode</option>
                 <option value={"Test"}>Test</option>
@@ -170,6 +179,7 @@ const AddDevice = () => {
                 value={device.category}
                 onChange={handleChange}
                 className="p-2 border rounded"
+                required
               />
                
             </div>
@@ -184,6 +194,7 @@ const AddDevice = () => {
                 value={device.date}
                 onChange={handleChange}
                 className="p-2 border rounded"
+                required
               />
             </div>
 
@@ -194,6 +205,7 @@ const AddDevice = () => {
                 value={device.comment}
                 onChange={handleChange}
                 className="p-2 border rounded"
+                required
               />
             </div>
 
@@ -252,11 +264,11 @@ const AddDevice = () => {
       )}
 
       <main className="flex-1 p-6 overflow-y-auto">
-        <Header icon={<HardDrive />} Name={`Devices`} />
+        <Header icon={<HardDrive className='bg-[#FFD9A3] h-8 w-8 rounded p-1'/>} Name={`Devices`} />
 
         {/* Page Title & Add Button */}
         <div className="flex justify-between items-center mb-6 px-2 rounded-xl ">
-          <div className="text-sm text-gray-500 flex items-center"><Home className='mr-2'/> / {"  "} Add Device</div>
+          <div className="text-sm text-gray-500 flex items-center"><Home className='mr-2' onClick={()=> navigate('/')}/> / {"  "}  Devices</div>
           <button
             onClick={() => setShow(!show)}
             className="flex items-center bg-blue-500 cursor-pointer py-1 px-2 text-white rounded hover:bg-blue-600 transition"
@@ -307,9 +319,9 @@ const AddDevice = () => {
             )).map((ele, index) => (
                 <tr key={index} className="hover:bg-gray-50">
                   <td className="border px-3 py-2">{index + 1}</td>
-                  <td className="border px-3 py-2">{ele.id}</td>
+                  <td className="border px-3 py-2">{ele.deviceid}</td>
                   <td className="border px-3 py-2">{ele.date || '-'}</td>
-                  <td className="border px-3 py-2">{ele.name}</td>
+                  <td className="border px-3 py-2">{ele.devicename}</td>
                   <td className="border px-3 py-2">{ele.category}</td>
                   <td className="border px-3 py-2">{ele.region}</td>
                   <td className="border px-3 py-2">{ele.City}</td>
@@ -321,10 +333,10 @@ const AddDevice = () => {
                   <td className="border px-3 py-2 text-center flex justify-center gap-2">
                       <button
                           onClick={() =>
-                            ele.id && ele.name && navigate(`/dashboard/${ele.id}/${ele.name}`)
+                            ele.deviceid && ele.devicename && navigate(`/dashboard/${ele.deviceid}/${ele.devicename}`)
                           }
                           className="rounded text-white bg-blue-500 cursor-pointer py-1 px-2 text-sm"
-                          disabled={!ele.id || !ele.name}
+                          disabled={!ele.deviceid || !ele.devicename}
                         >
                           View device
                         </button>
