@@ -33,7 +33,10 @@ export const fetchDeviceData = createAsyncThunk('sensors/fetchDeviceData', async
 const sensorSlice = createSlice({
   name: 'sensors',
   initialState: {
-    devices: [], // Initialize as empty, to be populated by API
+    devices: [
+       { devicename: "OTPL-WTH-001", deviceid: "348518941934",date:new Date().toJSON().slice(0, 10) , status:"Active",category:"Wifi",region:"North" },
+
+    ], // Initialize as empty, to be populated by API
     sensorData: [],
   },
   reducers: {
