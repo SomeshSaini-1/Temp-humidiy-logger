@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { addDevice } from '../redux/sensorSlice';
+import { fetchDeviceData } from '../redux/sensorSlice';
 import { CircleX, Download, HardDrive, Home, SlidersHorizontal, SquarePen, Trash } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../assets/Sidebar';
@@ -26,6 +26,10 @@ const AddDevice = () => {
   const navigate = useNavigate();
   const { devices = [] } = useSelector((state) => state.sensors);
   const [show, setShow] = useState(false);
+
+  useEffect(()=>{
+    dispatch(fetchDeviceData());
+  },[dispatch])
 
   const handleChange = (e) => {
     const { name, value } = e.target;

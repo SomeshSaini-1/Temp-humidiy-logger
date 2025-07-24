@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { fetchSensorData, addSensorData } from '../redux/sensorSlice';
+import { fetchSensorData, addSensorData ,fetchDeviceData} from '../redux/sensorSlice';
 import { MqttContext } from '../assets/Mqtt';
 import * as XLSX from 'xlsx';
 import Sidebar from '../assets/Sidebar';
@@ -19,7 +19,7 @@ export default function Dashboard() {
   const { sensorData, devices = [] } = useSelector((state) => state.sensors);
   const [Sensor, setSensor] = useState([]);
   const [count, setCount] = useState(1);
-  const { subscribeToTopic, data, publisher} = useContext(MqttContext);
+  const { subscribeToTopic, data, publisher } = useContext(MqttContext);
 
   // MQTT Subscription
   useEffect(() => {
@@ -29,7 +29,7 @@ export default function Dashboard() {
 
 
   const send_data = (data) => {
-    publisher(`am_sensor/${params.id}/TX`,data)
+    publisher(`am_sensor/${params.id}/TX`, data)
   }
 
   // Fetch historical data
@@ -53,6 +53,7 @@ export default function Dashboard() {
   // Fetch initial sensor data
   useEffect(() => {
     dispatch(fetchSensorData());
+    dispatch(fetchDeviceData())
   }, [dispatch]);
 
   // Parse MQTT data
@@ -102,227 +103,227 @@ export default function Dashboard() {
 
   console.log(deviceinfo);
 
-const [showfrom,setshowfrom] = useState();
-const [from_to_data,setfrom_to_data] = useState({
-  From :"", To:""
-});
+  const [showfrom, setshowfrom] = useState();
+  const [from_to_data, setfrom_to_data] = useState({
+    From: "", To: ""
+  });
 
-const handleChange = (e) =>{
-  const {name , value} = e.target;
-   setfrom_to_data((prev) => ({
-    ...prev,
-    [name] : value
-   }))
-}
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setfrom_to_data((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
-const handleSubmit = () => {
-  console.log(from_to_data);
-  exportToExcel('xlsx');
-}
+  const handleSubmit = () => {
+    console.log(from_to_data);
+    exportToExcel('xlsx');
+  }
   const from_to = () => {
-  return (
-    <div className='absolute w-full h-full inset-0' onClick={() => setshowfrom(false)}>
-      
-    <from  onClick={(e) => e.stopPropagation()}
-      className="absolute p-6 w-[15rem] bg-[#fff] text-[#000] rounded-lg shadow-xl space-y-4 z-[50]"
-      style={{ bottom: "6rem", right: "1rem" }}
-    >
-      {/* From Date Input */}
-      <div className="flex flex-col space-y-1">
-        <label className="text-sm font-medium text-left">From</label>
-        <input
-          type="date"
-          name="From"
-          value={from_to_data.From}
-          onChange={handleChange}
-          className="p-2 border rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
-      </div>
+    return (
+      <div className='absolute w-full h-full inset-0' onClick={() => setshowfrom(false)}>
 
-      {/* To Date Input */}
-      <div className="flex flex-col space-y-1">
-        <label className="text-sm font-medium text-left">To</label>
-        <input
-          type="date"
-          name="To"
-          value={from_to_data.To}
-          onChange={handleChange}
-          className="p-2 border rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-          required
-        />
-      </div>
-
-      {/* Download Button */}
-      <div className="pt-2">
-        <button
-          type='submit'
-          onSubmit={handleSubmit}
-          className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+        <from onClick={(e) => e.stopPropagation()}
+          className="absolute p-6 w-[15rem] bg-[#fff] text-[#000] rounded-lg shadow-xl space-y-4 z-[50]"
+          style={{ bottom: "6rem", right: "1rem" }}
         >
-          Excel
-        </button>
+          {/* From Date Input */}
+          <div className="flex flex-col space-y-1">
+            <label className="text-sm font-medium text-left">From</label>
+            <input
+              type="date"
+              name="From"
+              value={from_to_data.From}
+              onChange={handleChange}
+              className="p-2 border rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          {/* To Date Input */}
+          <div className="flex flex-col space-y-1">
+            <label className="text-sm font-medium text-left">To</label>
+            <input
+              type="date"
+              name="To"
+              value={from_to_data.To}
+              onChange={handleChange}
+              className="p-2 border rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          {/* Download Button */}
+          <div className="pt-2">
+            <button
+              type='submit'
+              onSubmit={handleSubmit}
+              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+            >
+              Excel
+            </button>
+          </div>
+        </from>
+
       </div>
-    </from>
+    );
+  };
 
-    </div>
-  );
-};
-
-const [show,setShow] = useState();
-const [Wifi,setWifi] = useState({
-  pass:"", login:""
-});
-const [alert,setalert] = useState({
-  humidity:"", temp :""
-})
+  const [show, setShow] = useState();
+  const [Wifi, setWifi] = useState({
+    pass: "", login: ""
+  });
+  const [alert, setalert] = useState({
+    humidity: "", temp: ""
+  })
 
 
-const handleChange1 = (e) =>{
-  const {name , value} = e.target;
-   setWifi((prev) => ({
-    ...prev,
-    [name] : value
-   }))
-}
+  const handleChange1 = (e) => {
+    const { name, value } = e.target;
+    setWifi((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
 
-const handleChange2 = (e) =>{
-  const {name , value} = e.target;
-   setalert((prev) => ({
-    ...prev,
-    [name] : value
-   }))
-}
+  const handleChange2 = (e) => {
+    const { name, value } = e.target;
+    setalert((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
 
 
   return (
     <div className="flex h-screen bg-gray-100">
       <Sidebar />
-      
+
       <main className="flex-1 p-6 overflow-y-auto">
         {/* <Header Name={`${params.name}-${params.id}`} /> */}
         <Header icon={<HardDrive className='bg-[#FFD9A3] h-8 w-8 rounded p-1' />} Name={`Device Analyitcs`} />
 
-{show && (
-  <div
-    className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50"
-    onClick={() => setShow(false)}
-  >
-    <div
-      onClick={(e) => e.stopPropagation()}
-      className="bg-white p-6 rounded-xl shadow-lg w-full max-w-5xl min-h-[80vh] overflow-y-auto"
-    >
-      {/* Modal Header */}
-      <div className="flex justify-between items-center border-b pb-4 mb-6">
-        <h4 className="font-bold text-2xl text-gray-800">Set Configuration</h4>
-        <CircleX className="cursor-pointer" onClick={() => setShow(false)} />
-      </div>
-
-      {/* Modal Title */}
-      <div className="text-center mb-8">
-        <h4 className="text-xl font-bold text-gray-800">Set Configuration</h4>
-      </div>
-
-      {/* Form Sections */}
-      <div className="space-y-8 max-w-4xl mx-auto">
-        
-        {/* WiFi Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-          <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-700 mb-1">WiFi Name</label>
-            <input
-              type="text"
-              name="login"
-              value={Wifi.login}
-              onChange={handleChange1}
-              className="p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
-              required
-            />
-          </div>
-
-          <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-700 mb-1">WiFi Password</label>
-            <input
-              type="text"
-              name="pass"
-              value={Wifi.pass}
-              onChange={handleChange1}
-              className="p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
-              required
-            />
-          </div>
-
-          <div>
-            <button
-              type="button" onClick={() => {
-                send_data(Wifi)
-              }}
-              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+        {show && (
+          <div
+            className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50"
+            onClick={() => setShow(false)}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white p-6 rounded-xl shadow-lg w-full max-w-5xl min-h-[80vh] overflow-y-auto"
             >
-              Set
-            </button>
+              {/* Modal Header */}
+              <div className="flex justify-between items-center border-b pb-4 mb-6">
+                <h4 className="font-bold text-2xl text-gray-800">Set Configuration</h4>
+                <CircleX className="cursor-pointer" onClick={() => setShow(false)} />
+              </div>
+
+              {/* Modal Title */}
+              <div className="text-center mb-8">
+                <h4 className="text-xl font-bold text-gray-800">Set Configuration</h4>
+              </div>
+
+              {/* Form Sections */}
+              <div className="space-y-8 max-w-4xl mx-auto">
+
+                {/* WiFi Section */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                  <div className="flex flex-col">
+                    <label className="text-sm font-medium text-gray-700 mb-1">WiFi Name</label>
+                    <input
+                      type="text"
+                      name="login"
+                      value={Wifi.login}
+                      onChange={handleChange1}
+                      className="p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
+                      required
+                    />
+                  </div>
+
+                  <div className="flex flex-col">
+                    <label className="text-sm font-medium text-gray-700 mb-1">WiFi Password</label>
+                    <input
+                      type="text"
+                      name="pass"
+                      value={Wifi.pass}
+                      onChange={handleChange1}
+                      className="p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <button
+                      type="button" onClick={() => {
+                        send_data(Wifi)
+                      }}
+                      className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+                    >
+                      Set
+                    </button>
+                  </div>
+                </div>
+
+                <div className='flex justify-between'>
+
+                  <div className="flex justify-between items-end">
+                    <div className="flex flex-col">
+                      <label className="text-sm font-medium text-gray-700 mb-1">Humidity Alert</label>
+                      <input
+                        type="text"
+                        name="humidity"
+                        value={alert.humidity}
+                        onChange={handleChange2}
+                        className="p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
+                        required
+                      />
+                    </div>
+
+                    <div className=" ml-10 ">
+                      <button
+                        type="button" onClick={() => { send_data({ Hume_th: alert.humidity }) }}
+                        className="w-full md:w-auto bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition"
+                      >
+                        Set
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-end">
+                    <div className="flex flex-col">
+                      <label className="text-sm font-medium text-gray-700 mb-1">Temperature Alert</label>
+                      <input
+                        name="temp"
+                        value={alert.temp}
+                        onChange={handleChange2}
+                        className="p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
+                        required
+                      />
+                    </div>
+
+                    <div className="ml-10">
+                      <button
+                        type="button" onClick={() => { send_data({ Temp_th: alert.temp }) }}
+                        className="w-full md:w-auto bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition"
+                      >
+                        Set
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+
+
+              </div>
+            </div>
           </div>
-        </div>
-
-        <div className='flex justify-between'>
-          
-        <div className="flex justify-between items-end">
-          <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-700 mb-1">Humidity Alert</label>
-            <input
-              type="text"
-              name="humidity"
-              value={alert.humidity}
-              onChange={handleChange2}
-              className="p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
-              required
-            />
-          </div>
-
-          <div className=" ml-10 ">
-            <button
-              type="button" onClick={() =>{send_data({Hume_th: alert.humidity})}}
-              className="w-full md:w-auto bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition"
-            >
-              Set
-            </button>
-          </div>
-        </div>
-
-        <div className="flex justify-between items-end">
-          <div className="flex flex-col">
-            <label className="text-sm font-medium text-gray-700 mb-1">Temperature Alert</label>
-            <input
-              name="temp"
-              value={alert.temp}
-              onChange={handleChange2}
-              className="p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
-              required
-            />
-          </div>
-
-          <div className="ml-10">
-            <button
-              type="button"  onClick={() =>{send_data({Temp_th: alert.temp})}}
-              className="w-full md:w-auto bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition"
-            >
-              Set
-            </button>
-          </div>
-        </div>
-
-        </div>
-
-          
-      </div>
-    </div>
-  </div>
-)} 
+        )}
 
         {/* Page Title & Add Button */}
         <div className="flex justify-between items-center mb-6 px-2 rounded-xl ">
-          <div className="text-sm text-gray-500 flex items-center"><Home className='mr-2' onClick={()=> navigate('/')}/> / {"  "}  Devices</div>
+          <div className="text-sm text-gray-500 flex items-center"><Home className='mr-2' onClick={() => navigate('/')} /> / {"  "}  Devices</div>
           <button
             onClick={() => setShow(!show)}
             className="flex items-center bg-blue-500 cursor-pointer py-1 px-2 text-white rounded hover:bg-blue-600 transition"
@@ -453,15 +454,15 @@ const handleChange2 = (e) =>{
 
         {/* Data Table */}
         <div className="bg-white p-6 rounded shadow-md my-4">
-                 
+
           <span className='flex justify-between gap-4 mb-4'>
-            
-           {showfrom && from_to()}
- 
+
+            {showfrom && from_to()}
+
             <button className='flex gap-4 font-bold border-2 rounded-lg px-4 py-2 '><SlidersHorizontal />Filter</button>
-            <button className='flex gap-4 font-bold border-2 rounded-lg px-4 py-2 bg-blue-500 text-white' 
-            // onClick={() => exportToExcel('xlsx')}
-            onClick={() => setshowfrom(!showfrom)}
+            <button className='flex gap-4 font-bold border-2 rounded-lg px-4 py-2 bg-blue-500 text-white'
+              // onClick={() => exportToExcel('xlsx')}
+              onClick={() => setshowfrom(!showfrom)}
             >Download <Download /></button>
           </span>
 

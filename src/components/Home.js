@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect } from 'react';
 import { MqttContext } from '../assets/Mqtt';
@@ -6,10 +6,19 @@ import { FaSitemap, FaChartLine } from 'react-icons/fa';
 import Sidebar from '../assets/Sidebar';
 import Header from '../assets/Header';
 import Map from '../assets/Map';
+import { fetchDeviceData } from '../redux/sensorSlice'; // Adjust path to your sensorSlice file
 
 const Home = () => {
+  
+  const dispatch = useDispatch();
+  const devices = useSelector((state) => state.sensors.devices); // Access devices from Redux store
+
+  useEffect(() => {
+    dispatch(fetchDeviceData()); // Dispatch the thunk to fetch device data
+  }, [dispatch]);
+
   const { subscribeToTopic, data } = useContext(MqttContext);
-  const { devices = [] } = useSelector((state) => state.sensors);
+  // const { devices = [] } = useSelector((state) => state.sensors);
   const navigate = useNavigate();
 
   // MQTT Subscription
