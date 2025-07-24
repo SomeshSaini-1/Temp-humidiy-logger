@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { addDevice } from '../redux/sensorSlice';
-import { CircleX, Delete, Download, HardDrive, Home, SlidersHorizontal, SquarePen } from 'lucide-react';
+import { CircleX, Download, HardDrive, Home, SlidersHorizontal, SquarePen, Trash } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../assets/Sidebar';
 import Header from '../assets/Header';
 
 const AddDevice = () => {
-
+      const apiUrl = process.env.REACT_APP_API_URL;
+    console.log(apiUrl);
   const [device, setDevice] = useState({
     devicename: "",
     deviceid: "",
@@ -31,10 +32,19 @@ const AddDevice = () => {
     setDevice({ ...device, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // dispatch(addDevice({ id: device.deviceid, name: device.devicename, date: device.date }));
-    dispatch(addDevice(device));
+    // dispatch(addDevice(device));
+    const url = await fetch(`${apiUrl}/api/DeviceRegister`,{
+      method :"POST",
+      headers: { 'Content-Type': 'application/json' },
+      body : JSON.stringify(device)
+    })
+
+    const data = await url.json();
+    console.log(data)
+
     setDevice({
     devicename: "",
     deviceid: "",
@@ -341,7 +351,7 @@ const AddDevice = () => {
                           View device
                         </button>
 
-                    <Delete className="text-red-500 cursor-pointer" />
+                    <Trash className="text-red-500 cursor-pointer" />
                     <SquarePen className="text-blue-500 cursor-pointer" />
                   </td>
                 </tr>
