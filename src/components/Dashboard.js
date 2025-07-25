@@ -136,7 +136,7 @@ export default function Dashboard() {
               name="From"
               value={from_to_data.From}
               onChange={handleChange}
-              className="p-2 border rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border rounded bg-[var(--bg)]  text-[var(--white)] focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -149,7 +149,7 @@ export default function Dashboard() {
               name="To"
               value={from_to_data.To}
               onChange={handleChange}
-              className="p-2 border rounded bg-white text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="p-2 border rounded bg-[var(--bg)]  text-[var(--white)] focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
@@ -198,7 +198,7 @@ export default function Dashboard() {
 
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-[var(--secondary)] text-[var(--text)]">
       <Sidebar />
 
       <main className="flex-1 p-6 overflow-y-auto">
@@ -212,24 +212,24 @@ export default function Dashboard() {
   >
     <div
       onClick={(e) => e.stopPropagation()}
-      className="bg-white p-8 rounded-xl shadow-lg w-full max-w-6xl min-h-[80vh] overflow-y-auto"
+      className="bg-white  p-8 rounded-xl shadow-lg w-full max-w-6xl min-h-[80vh] overflow-y-auto"
     >
       {/* Modal Header */}
-      <div className="flex justify-between items-center border-b pb-4 mb-6">
-        <h4 className="font-bold text-2xl text-gray-800">Set Configuration</h4>
+      <div className="flex justify-between items-center border-b pb-4 mb-6 text-black">
+        <h4 className="font-bold text-2xl">Set Configuration</h4>
         <CircleX className="cursor-pointer" onClick={() => setShow(false)} />
       </div>
 
       {/* Modal Title */}
       <div className="mb-8 text-center">
-        <h4 className="text-xl font-semibold text-gray-800">Configure Your Settings</h4>
+        <h4 className="text-xl font-semibold text-black">Configure Your Settings</h4>
       </div>
 
       {/* Sections */}
       <div className="space-y-10 max-w-6xl mx-auto">
         {/* WiFi Settings */}
         <section className="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200">
-          <h5 className="text-lg font-semibold text-gray-700 mb-4 border-b pb-2 text-left">WiFi Settings</h5>
+          <h5 className="text-lg font-semibold text-black mb-4 border-b pb-2 text-left">WiFi Settings</h5>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
             <div className="flex flex-col">
               <label className="text-sm font-medium text-gray-600 mb-1 text-left">WiFi Name</label>
@@ -267,10 +267,10 @@ export default function Dashboard() {
 
         {/* Alert Settings */}
         <section className="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200">
-          <h5 className="text-lg font-semibold text-gray-700 mb-4 border-b pb-2 text-left">Alert Settings</h5>
+          <h5 className="text-lg font-semibold text-black mb-4 border-b pb-2 text-left">Alert Settings</h5>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Humidity Alert */}
-            <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col">
+            <div className="  p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col">
               <label className="text-sm font-medium text-gray-600 mb-2 text-left">Humidity Alert (%)</label>
               <div className="flex items-center space-x-3">
                 <input
@@ -293,7 +293,7 @@ export default function Dashboard() {
               </div>
             </div>
             {/* Temperature Alert */}
-            <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col">
+            <div className="  p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col">
               <label className="text-sm font-medium text-gray-600 mb-2 text-left">Temperature Alert (°C)</label>
               <div className="flex items-center space-x-3">
                 <input
@@ -324,7 +324,7 @@ export default function Dashboard() {
       
         {/* Page Title & Add Button */}
         <div className="flex justify-between items-center mb-6 px-2 rounded-xl ">
-          <div className="text-sm text-gray-500 flex items-center"><Home className='mr-2' onClick={() => navigate('/')} /> / {"  "}  Devices</div>
+          <div className="text-sm text-[var(--white)] flex items-center"><Home className='mr-2' onClick={() => navigate('/')} /> / {"  "}  Devices</div>
           <button
             onClick={() => setShow(!show)}
             className="flex items-center bg-blue-500 cursor-pointer py-1 px-2 text-white rounded hover:bg-blue-600 transition"
@@ -337,7 +337,7 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
 
           {/* Device Information */}
-          <div className="col-span-1 bg-white rounded-lg shadow border border-gray-300">
+          <div className="col-span-1 bg-[var(--bg)]  rounded-lg shadow border border-gray-300">
             {/* Header */}
             <div className="bg-blue-700 text-white px-4 py-2 rounded-t-lg">
               <h3 className="text-lg font-semibold">Device Information</h3>
@@ -354,46 +354,46 @@ export default function Dashboard() {
             {/* Content */}
             <div className="p-4 space-y-3 text-sm">
               <div className="flex justify-between items-center  pb-2">
-                <span className="text-gray-500">Device ID:</span>
+                <span className="text-[var(--white)]">Device ID:</span>
                 <div className="text-blue-600 text-left w-1/2 cursor-pointer">{params.id}</div>
 
               </div>
 
               <div className="space-y-3 mt-2">
                 <div className="flex justify-between  pb-1">
-                  <span className="text-gray-500">Devicename:</span>
-                  <span className="font-medium text-gray-700 text-left w-1/2">{params.name}</span>
+                  <span className="text-[var(--white)]">Devicename:</span>
+                  <span className="font-medium text-[var(--white)] text-left w-1/2">{params.name}</span>
                 </div>
                 <div className="flex justify-between  pb-1">
-                  <span className="text-gray-500">Deviceid:</span>
-                  <span className="font-medium text-gray-700 text-left w-1/2">{params.id}</span>
+                  <span className="text-[var(--white)]">Deviceid:</span>
+                  <span className="font-medium text-[var(--white)] text-left w-1/2">{params.id}</span>
                 </div>
                 <div className="flex justify-between  pb-1">
-                  <span className="text-gray-500">Category:</span>
-                  <span className="font-medium text-gray-700 text-left w-1/2">{deviceinfo[0]?.category || "--"}</span>
+                  <span className="text-[var(--white)]">Category:</span>
+                  <span className="font-medium text-[var(--white)] text-left w-1/2">{deviceinfo[0]?.category || "--"}</span>
                 </div>
                 <div className="flex justify-between  pb-1">
-                  <span className="text-gray-500">Date:</span>
-                  <span className="font-medium text-gray-700 text-left w-1/2">{deviceinfo[0]?.date || "--"}</span>
+                  <span className="text-[var(--white)]">Date:</span>
+                  <span className="font-medium text-[var(--white)] text-left w-1/2">{deviceinfo[0]?.date || "--"}</span>
                 </div>
                 <div className="flex justify-between  pb-1">
-                  <span className="text-gray-500">Mode:</span>
-                  <span className="font-medium capitalize text-gray-700 text-left w-1/2">
+                  <span className="text-[var(--white)]">Mode:</span>
+                  <span className="font-medium capitalize text-[var(--white)] text-left w-1/2">
                     {deviceinfo[0]?.Mode || "Test"}
                   </span>
                 </div>
                 <div className="flex justify-between  pb-1">
-                  <span className="text-gray-500">Region:</span>
-                  <span className="font-medium text-gray-700 text-left w-1/2">{deviceinfo[0]?.region || "--"}</span>
+                  <span className="text-[var(--white)]">Region:</span>
+                  <span className="font-medium text-[var(--white)] text-left w-1/2">{deviceinfo[0]?.region || "--"}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">City:</span>
-                  <span className="font-medium text-gray-700 text-left w-1/2">{deviceinfo[0]?.City || "Jaipur"}</span>
+                  <span className="text-[var(--white)]">City:</span>
+                  <span className="font-medium text-[var(--white)] text-left w-1/2">{deviceinfo[0]?.City || "Jaipur"}</span>
                 </div>
 
                 <div className="flex justify-between">
-                  <span className="text-gray-500">Organization:</span>
-                  <span className="font-medium text-gray-700 text-left w-1/2">{deviceinfo[0]?.Organization || "Oxymora"}</span>
+                  <span className="text-[var(--white)]">Organization:</span>
+                  <span className="font-medium text-[var(--white)] text-left w-1/2">{deviceinfo[0]?.Organization || "Oxymora"}</span>
                 </div>
 
               </div>
@@ -403,12 +403,12 @@ export default function Dashboard() {
 
           {/* Metrics Cards */}
           <div className="col-span-1 space-y-4">
-            <div className="bg-white p-4 rounded-lg shadow-md border-l-4 border-blue-500">
+            <div className="bg-[var(--bg)]  p-4 rounded-lg shadow-md border-l-4 border-blue-500">
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <h4 className="text-sm font-medium text-gray-500">Humidity</h4>
-                  <p className="text-2xl font-semibold text-gray-800">
-                    {data_sen?.humidity || '--'} <span className="text-lg text-gray-500">%RH</span>
+                  <h4 className="text-sm font-medium text-[var(--white)]">Humidity</h4>
+                  <p className="text-2xl font-semibold text-[var(--white)]">
+                    {data_sen?.humidity || '--'} <span className="text-lg text-[var(--white)]">%RH</span>
                   </p>
                 </div>
               </div>
@@ -421,12 +421,12 @@ export default function Dashboard() {
                 />
               </div>
             </div>
-            <div className="bg-white p-4 rounded-lg shadow-md border-l-4 border-red-500">
+            <div className="bg-[var(--bg)]  p-4 rounded-lg shadow-md border-l-4 border-red-500">
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <h4 className="text-sm font-medium text-gray-500">Temperature</h4>
-                  <p className="text-2xl font-semibold text-gray-800">
-                    {data_sen?.temperature || '--'} <span className="text-lg text-gray-500">°C</span>
+                  <h4 className="text-sm font-medium text-[var(--white)]">Temperature</h4>
+                  <p className="text-2xl font-semibold text-[var(--white)]">
+                    {data_sen?.temperature || '--'} <span className="text-lg text-[var(--white)]">°C</span>
                   </p>
                 </div>
               </div>
@@ -448,13 +448,13 @@ export default function Dashboard() {
         </div>
 
         {/* Main Chart */}
-        <div className="bg-white p-6 rounded shadow-md my-4">
+        <div className="bg-[var(--bg)]  p-6 rounded shadow-md my-4">
           <Mainchart sensorData={Sensor} />
         </div>
 
 
         {/* Data Table */}
-        <div className="bg-white p-6 rounded shadow-md my-4">
+        <div className="bg-[var(--bg)]  p-6 rounded shadow-md my-4">
 
           <span className='flex justify-between gap-4 mb-4'>
 

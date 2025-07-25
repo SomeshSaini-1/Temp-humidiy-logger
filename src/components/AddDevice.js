@@ -68,7 +68,7 @@ const AddDevice = () => {
   const [Search,setSearch] = useState("");
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-[var(--secondary)] text-[var(--text)]">
       <Sidebar />
 
       {/* Modal for Adding Device */}
@@ -78,14 +78,14 @@ const AddDevice = () => {
           <div 
             onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
             className="bg-white p-6 rounded-xl shadow-md w-full max-w-6xl h-auto min-h-[80vh]"> 
-            <div className='flex justify-between items-center px-2 mb-6'>
-              <h4 className='font-bold text-xl'>Add Device</h4>
+            <div className='flex justify-between items-center px-2 mb-6 text-black'>
+              <h4 className='font-bold text-xl '>Add Device</h4>
               <CircleX onClick={()=> {setShow(false)}}/>
             </div>
 
-            <div className='text-center'>
+            <div className='text-center text-black'>
               <h4 className='font-bold text-xl'>Add New Device </h4>
-              <p className='text-gray-500 font-semibold mb-4'>Enter details to tag a new device</p>
+              <p className=' font-semibold mb-4 text-gray-500'>Enter details to tag a new device</p>
             </div>
 
             <div className='flex justify-end items-center px-10 mb-6'>
@@ -96,7 +96,7 @@ const AddDevice = () => {
             </div>
             {!Single ?
           <form
-            className='grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-3xl mx-auto'
+            className='grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-3xl mx-auto text-black'
             onSubmit={handleSubmit}
           >
             <div className="flex flex-col">
@@ -223,7 +223,7 @@ const AddDevice = () => {
               />
             </div>
 
-            <div className="md:col-span-2">
+            <div className="md:col-span-3">
               <button
                 type="submit"
                 className="w-full max-w-[10rem] bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
@@ -282,7 +282,7 @@ const AddDevice = () => {
 
         {/* Page Title & Add Button */}
         <div className="flex justify-between items-center mb-6 px-2 rounded-xl ">
-          <div className="text-sm text-gray-500 flex items-center"><Home className='mr-2' onClick={()=> navigate('/')}/> / {"  "}  Devices</div>
+          <div className="text-sm text-[var(--balck)] flex items-center"><Home className='mr-2' onClick={()=> navigate('/')}/> / {"  "}  Devices</div>
           <button
             onClick={() => setShow(!show)}
             className="flex items-center bg-blue-500 cursor-pointer py-1 px-2 text-white rounded hover:bg-blue-600 transition"
@@ -294,16 +294,16 @@ const AddDevice = () => {
 
 
         {/* Devices Table */}
-        <div className="bg-white p-6 rounded-xl shadow-md overflow-auto h-[75%] mt-10">
+        <div className="bg-[var(--bg)] p-6 rounded-xl shadow-md overflow-auto h-[75%] mt-10">
           
         <div className="flex justify-between items-center mb-6 px-2 rounded-xl ">
           <span className='flex gap-2'>
             <ul>
               <li className='font-bold text-left'>Device List   ({devices.length || "--"})</li>
-              <li className='text-sm text-gray-500'>Track and manage all devices in the real time</li>
+              <li className='text-sm text-[var(--balck)]'>Track and manage all devices in the real time</li>
             </ul>
             <input onChange={(e) => {setSearch(e.target.value)}} value={Search} placeholder='Search ...'
-             className='text-gray-600 border-gray-500 border-2 rounded-lg px-4 ml-4 '/>
+             className='text-gray-600 border-[var(--balck)] border-2 rounded-lg px-4 ml-4 '/>
           </span>
           <span className='flex gap-4'>
             <button className='flex gap-4 font-bold border-2 rounded-lg px-4 py-2 '><SlidersHorizontal />Filter</button>
@@ -311,7 +311,7 @@ const AddDevice = () => {
           </span>
         </div>
           <table className="min-w-full text-sm text-left border">
-            <thead className="bg-gray-100">
+            <thead >
               <tr>
                 <th className="border px-3 py-2">Sr. No.</th>
                 <th className="border px-3 py-2">Device ID</th>
@@ -331,7 +331,7 @@ const AddDevice = () => {
   Object.values(ele).some((val) =>
     String(val).toLowerCase().includes(Search.toLowerCase())
             )).map((ele, index) => (
-                <tr key={index} className="hover:bg-gray-50">
+                <tr key={index} >
                   <td className="border px-3 py-2">{index + 1}</td>
                   <td className="border px-3 py-2">{ele.deviceid}</td>
                   <td className="border px-3 py-2">{ele.date || '-'}</td>

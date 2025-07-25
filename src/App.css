@@ -3,15 +3,47 @@
   font-family: 'Arial', sans-serif;
 }
 
-
+/* Light Theme Variables */
 .light-theme {
-  --white: #ffffff;
-  --black: #333;
+  --bg: #ffffff;
+  --text: #333333;
   --sidebar: #33383e;
+  --primary: #007bff;
+  --secondary: #f8f9fa;
 }
 
+/* Dark Theme Variables */
 .dark-theme {
-  --white: #222;
-  --black: #fff;
-  --sidebar: #fff;
+  --bg: #222831;
+  --text: #f1f1f1;
+  --sidebar: #ffffff;
+  --primary: #00adb5;
+  --secondary: #393E46;
+}
+
+/* Apply global variables */
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Example sidebar using variables */
+.sidebar {
+  background-color: var(--sidebar);
+  color: var(--text);
+}
+
+/* Example button using theme color */
+.button {
+  background-color: var(--primary);
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: 0.9;
 }
