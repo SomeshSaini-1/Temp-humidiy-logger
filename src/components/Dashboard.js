@@ -205,122 +205,123 @@ export default function Dashboard() {
         {/* <Header Name={`${params.name}-${params.id}`} /> */}
         <Header icon={<HardDrive className='bg-[#FFD9A3] h-8 w-8 rounded p-1' />} Name={`Device Analyitcs`} />
 
-        {show && (
-          <div
-            className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50"
-            onClick={() => setShow(false)}
-          >
-            <div
-              onClick={(e) => e.stopPropagation()}
-              className="bg-white p-6 rounded-xl shadow-lg w-full max-w-5xl min-h-[80vh] overflow-y-auto"
-            >
-              {/* Modal Header */}
-              <div className="flex justify-between items-center border-b pb-4 mb-6">
-                <h4 className="font-bold text-2xl text-gray-800">Set Configuration</h4>
-                <CircleX className="cursor-pointer" onClick={() => setShow(false)} />
+      {show && (
+  <div
+    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50"
+    onClick={() => setShow(false)}
+  >
+    <div
+      onClick={(e) => e.stopPropagation()}
+      className="bg-white p-8 rounded-xl shadow-lg w-full max-w-6xl min-h-[80vh] overflow-y-auto"
+    >
+      {/* Modal Header */}
+      <div className="flex justify-between items-center border-b pb-4 mb-6">
+        <h4 className="font-bold text-2xl text-gray-800">Set Configuration</h4>
+        <CircleX className="cursor-pointer" onClick={() => setShow(false)} />
+      </div>
+
+      {/* Modal Title */}
+      <div className="mb-8 text-center">
+        <h4 className="text-xl font-semibold text-gray-800">Configure Your Settings</h4>
+      </div>
+
+      {/* Sections */}
+      <div className="space-y-10 max-w-6xl mx-auto">
+        {/* WiFi Settings */}
+        <section className="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200">
+          <h5 className="text-lg font-semibold text-gray-700 mb-4 border-b pb-2 text-left">WiFi Settings</h5>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+            <div className="flex flex-col">
+              <label className="text-sm font-medium text-gray-600 mb-1 text-left">WiFi Name</label>
+              <input
+                type="text"
+                placeholder="Enter WiFi Name"
+                value={Wifi.login}
+                onChange={handleChange1}
+                className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                required
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-sm font-medium text-gray-600 mb-1 text-left">WiFi Password</label>
+              <input
+                type="text"
+                placeholder="Enter WiFi Password"
+                value={Wifi.pass}
+                onChange={handleChange1}
+                className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                required
+              />
+            </div>
+            <div className="flex items-end">
+              <button
+                type="button"
+                onClick={() => send_data(Wifi)}
+                className="w-full md:w-auto bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
+              >
+                Save WiFi Settings
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* Alert Settings */}
+        <section className="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200">
+          <h5 className="text-lg font-semibold text-gray-700 mb-4 border-b pb-2 text-left">Alert Settings</h5>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Humidity Alert */}
+            <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col">
+              <label className="text-sm font-medium text-gray-600 mb-2 text-left">Humidity Alert (%)</label>
+              <div className="flex items-center space-x-3">
+                <input
+                  type="number"
+                  min="0"
+                  max="100"
+                  placeholder="e.g., 70"
+                  value={alert.humidity}
+                  onChange={handleChange2}
+                  className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => send_data({ Hume_th: alert.humidity })}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+                >
+                  Set
+                </button>
               </div>
-
-              {/* Modal Title */}
-              <div className="text-center mb-8">
-                <h4 className="text-xl font-bold text-gray-800">Set Configuration</h4>
-              </div>
-
-              {/* Form Sections */}
-              <div className="space-y-8 max-w-4xl mx-auto">
-
-                {/* WiFi Section */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-                  <div className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 mb-1">WiFi Name</label>
-                    <input
-                      type="text"
-                      name="login"
-                      value={Wifi.login}
-                      onChange={handleChange1}
-                      className="p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
-                      required
-                    />
-                  </div>
-
-                  <div className="flex flex-col">
-                    <label className="text-sm font-medium text-gray-700 mb-1">WiFi Password</label>
-                    <input
-                      type="text"
-                      name="pass"
-                      value={Wifi.pass}
-                      onChange={handleChange1}
-                      className="p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <button
-                      type="button" onClick={() => {
-                        send_data(Wifi)
-                      }}
-                      className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
-                    >
-                      Set
-                    </button>
-                  </div>
-                </div>
-
-                <div className='flex justify-between'>
-
-                  <div className="flex justify-between items-end">
-                    <div className="flex flex-col">
-                      <label className="text-sm font-medium text-gray-700 mb-1">Humidity Alert</label>
-                      <input
-                        type="text"
-                        name="humidity"
-                        value={alert.humidity}
-                        onChange={handleChange2}
-                        className="p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
-                        required
-                      />
-                    </div>
-
-                    <div className=" ml-10 ">
-                      <button
-                        type="button" onClick={() => { send_data({ Hume_th: alert.humidity }) }}
-                        className="w-full md:w-auto bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition"
-                      >
-                        Set
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between items-end">
-                    <div className="flex flex-col">
-                      <label className="text-sm font-medium text-gray-700 mb-1">Temperature Alert</label>
-                      <input
-                        name="temp"
-                        value={alert.temp}
-                        onChange={handleChange2}
-                        className="p-2 border border-gray-300 rounded-md focus:ring focus:ring-blue-300"
-                        required
-                      />
-                    </div>
-
-                    <div className="ml-10">
-                      <button
-                        type="button" onClick={() => { send_data({ Temp_th: alert.temp }) }}
-                        className="w-full md:w-auto bg-blue-600 text-white py-2 px-6 rounded-md hover:bg-blue-700 transition"
-                      >
-                        Set
-                      </button>
-                    </div>
-                  </div>
-
-                </div>
-
-
+            </div>
+            {/* Temperature Alert */}
+            <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col">
+              <label className="text-sm font-medium text-gray-600 mb-2 text-left">Temperature Alert (°C)</label>
+              <div className="flex items-center space-x-3">
+                <input
+                  type="number"
+                  min="0"
+                  max="50"
+                  placeholder="e.g., 30"
+                  value={alert.temp}
+                  onChange={handleChange2}
+                  className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => send_data({ Temp_th: alert.temp })}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+                >
+                  Set
+                </button>
               </div>
             </div>
           </div>
-        )}
-
+        </section>
+      </div>
+    </div>
+  </div>
+)}
+      
         {/* Page Title & Add Button */}
         <div className="flex justify-between items-center mb-6 px-2 rounded-xl ">
           <div className="text-sm text-gray-500 flex items-center"><Home className='mr-2' onClick={() => navigate('/')} /> / {"  "}  Devices</div>
