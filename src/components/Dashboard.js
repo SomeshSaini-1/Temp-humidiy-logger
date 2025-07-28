@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { fetchSensorData, addSensorData ,fetchDeviceData} from '../redux/sensorSlice';
+import { fetchSensorData, addSensorData, fetchDeviceData } from '../redux/sensorSlice';
 import { MqttContext } from '../assets/Mqtt';
 import * as XLSX from 'xlsx';
 import Sidebar from '../assets/Sidebar';
@@ -32,23 +32,31 @@ export default function Dashboard() {
     publisher(`am_sensor/${params.id}/TX`, data)
   }
 
-  // Fetch historical data
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await fetch('http://otplai.com:4004/api/get_data', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: params.id, page: count }),
-        });
-        const data = await response.json();
-        setSensor(data);
-      } catch (err) {
-        console.error('❌ Failed to fetch data:', err);
-      }
-    };
-    getData();
-  }, [count, params.id]);
+const [loading, setLoading] = useState(false);
+
+useEffect(() => {
+  const getData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch('https://otplai.com:4004/api/get_data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: params.id, page: count }),
+      });
+      if (!response.ok) throw new Error(`Status ${response.status}`);
+      const data = await response.json();
+      setSensor(data);
+    } catch (err) {
+      console.error('❌ Failed to fetch data:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+  getData();
+}, [count, params.id]);
+
+
+
 
   // Fetch initial sensor data
   useEffect(() => {
@@ -205,123 +213,123 @@ export default function Dashboard() {
         {/* <Header Name={`${params.name}-${params.id}`} /> */}
         <Header icon={<HardDrive className='bg-[#FFD9A3] h-8 w-8 rounded p-1' />} Name={`Device Analyitcs`} />
 
-      {show && (
-  <div
-    className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50"
-    onClick={() => setShow(false)}
-  >
-    <div
-      onClick={(e) => e.stopPropagation()}
-      className="bg-white  p-8 rounded-xl shadow-lg w-full max-w-6xl min-h-[80vh] overflow-y-auto"
-    >
-      {/* Modal Header */}
-      <div className="flex justify-between items-center border-b pb-4 mb-6 text-black">
-        <h4 className="font-bold text-2xl">Set Configuration</h4>
-        <CircleX className="cursor-pointer" onClick={() => setShow(false)} />
-      </div>
+        {show && (
+          <div
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50"
+            onClick={() => setShow(false)}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white  p-8 rounded-xl shadow-lg w-full max-w-6xl min-h-[80vh] overflow-y-auto"
+            >
+              {/* Modal Header */}
+              <div className="flex justify-between items-center border-b pb-4 mb-6 text-black">
+                <h4 className="font-bold text-2xl">Set Configuration</h4>
+                <CircleX className="cursor-pointer" onClick={() => setShow(false)} />
+              </div>
 
-      {/* Modal Title */}
-      <div className="mb-8 text-center">
-        <h4 className="text-xl font-semibold text-black">Configure Your Settings</h4>
-      </div>
+              {/* Modal Title */}
+              <div className="mb-8 text-center">
+                <h4 className="text-xl font-semibold text-black">Configure Your Settings</h4>
+              </div>
 
-      {/* Sections */}
-      <div className="space-y-10 max-w-6xl mx-auto">
-        {/* WiFi Settings */}
-        <section className="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200">
-          <h5 className="text-lg font-semibold text-black mb-4 border-b pb-2 text-left">WiFi Settings</h5>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-            <div className="flex flex-col">
-              <label className="text-sm font-medium text-gray-600 mb-1 text-left">WiFi Name</label>
-              <input
-                type="text"
-                placeholder="Enter WiFi Name"
-                value={Wifi.login}
-                onChange={handleChange1}
-                className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                required
-              />
-            </div>
-            <div className="flex flex-col">
-              <label className="text-sm font-medium text-gray-600 mb-1 text-left">WiFi Password</label>
-              <input
-                type="text"
-                placeholder="Enter WiFi Password"
-                value={Wifi.pass}
-                onChange={handleChange1}
-                className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                required
-              />
-            </div>
-            <div className="flex items-end">
-              <button
-                type="button"
-                onClick={() => send_data(Wifi)}
-                className="w-full md:w-auto bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
-              >
-                Save WiFi Settings
-              </button>
-            </div>
-          </div>
-        </section>
+              {/* Sections */}
+              <div className="space-y-10 max-w-6xl mx-auto">
+                {/* WiFi Settings */}
+                <section className="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200">
+                  <h5 className="text-lg font-semibold text-black mb-4 border-b pb-2 text-left">WiFi Settings</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                    <div className="flex flex-col">
+                      <label className="text-sm font-medium text-gray-600 mb-1 text-left">WiFi Name</label>
+                      <input
+                        type="text"
+                        placeholder="Enter WiFi Name"
+                        value={Wifi.login}
+                        onChange={handleChange1}
+                        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        required
+                      />
+                    </div>
+                    <div className="flex flex-col">
+                      <label className="text-sm font-medium text-gray-600 mb-1 text-left">WiFi Password</label>
+                      <input
+                        type="text"
+                        placeholder="Enter WiFi Password"
+                        value={Wifi.pass}
+                        onChange={handleChange1}
+                        className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                        required
+                      />
+                    </div>
+                    <div className="flex items-end">
+                      <button
+                        type="button"
+                        onClick={() => send_data(Wifi)}
+                        className="w-full md:w-auto bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition"
+                      >
+                        Save WiFi Settings
+                      </button>
+                    </div>
+                  </div>
+                </section>
 
-        {/* Alert Settings */}
-        <section className="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200">
-          <h5 className="text-lg font-semibold text-black mb-4 border-b pb-2 text-left">Alert Settings</h5>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Humidity Alert */}
-            <div className="  p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col">
-              <label className="text-sm font-medium text-gray-600 mb-2 text-left">Humidity Alert (%)</label>
-              <div className="flex items-center space-x-3">
-                <input
-                  type="number"
-                  min="0"
-                  max="100"
-                  placeholder="e.g., 70"
-                  value={alert.humidity}
-                  onChange={handleChange2}
-                  className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => send_data({ Hume_th: alert.humidity })}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
-                >
-                  Set
-                </button>
+                {/* Alert Settings */}
+                <section className="bg-gray-50 p-6 rounded-lg shadow-md border border-gray-200">
+                  <h5 className="text-lg font-semibold text-black mb-4 border-b pb-2 text-left">Alert Settings</h5>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Humidity Alert */}
+                    <div className="  p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col">
+                      <label className="text-sm font-medium text-gray-600 mb-2 text-left">Humidity Alert (%)</label>
+                      <div className="flex items-center space-x-3">
+                        <input
+                          type="number"
+                          min="0"
+                          max="100"
+                          placeholder="e.g., 70"
+                          value={alert.humidity}
+                          onChange={handleChange2}
+                          className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => send_data({ Hume_th: alert.humidity })}
+                          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+                        >
+                          Set
+                        </button>
+                      </div>
+                    </div>
+                    {/* Temperature Alert */}
+                    <div className="  p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col">
+                      <label className="text-sm font-medium text-gray-600 mb-2 text-left">Temperature Alert (°C)</label>
+                      <div className="flex items-center space-x-3">
+                        <input
+                          type="number"
+                          min="0"
+                          max="50"
+                          placeholder="e.g., 30"
+                          value={alert.temp}
+                          onChange={handleChange2}
+                          className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => send_data({ Temp_th: alert.temp })}
+                          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+                        >
+                          Set
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </section>
               </div>
             </div>
-            {/* Temperature Alert */}
-            <div className="  p-4 rounded-lg shadow-sm border border-gray-200 flex flex-col">
-              <label className="text-sm font-medium text-gray-600 mb-2 text-left">Temperature Alert (°C)</label>
-              <div className="flex items-center space-x-3">
-                <input
-                  type="number"
-                  min="0"
-                  max="50"
-                  placeholder="e.g., 30"
-                  value={alert.temp}
-                  onChange={handleChange2}
-                  className="flex-1 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => send_data({ Temp_th: alert.temp })}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
-                >
-                  Set
-                </button>
-              </div>
-            </div>
           </div>
-        </section>
-      </div>
-    </div>
-  </div>
-)}
-      
+        )}
+
         {/* Page Title & Add Button */}
         <div className="flex justify-between items-center mb-6 px-2 rounded-xl ">
           <div className="text-sm text-[var(--white)] flex items-center"><Home className='mr-2' onClick={() => navigate('/')} /> / {"  "}  Devices</div>
