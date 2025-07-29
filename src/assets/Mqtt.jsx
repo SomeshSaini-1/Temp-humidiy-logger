@@ -44,7 +44,7 @@ const MqttProvider = ({ children }) => {
     if (client && topics.length > 0) {
       topics.forEach((topic) => {
         client.subscribe(topic, (err) => {
-          if (err) console.error(`❌ Error subscribing to ${topic}:`, err);
+          if (err) console.error(`❌ Error subscribing the ${topic}:`, err);
           else console.log(`✅ Subscribed to ${topic}`);
         });
       });
