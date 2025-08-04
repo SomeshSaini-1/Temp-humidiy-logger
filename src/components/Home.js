@@ -109,7 +109,7 @@ const Home = () => {
                 </thead>
                 <tbody>
                   {devices.map((ele, index) => (
-                    <tr key={index} className="">
+                    <tr key={index} className={`${getStatus(ele.deviceid) === 'Disconnected' && 'bg-red-200'}`}>
                       <td className="border px-3 py-2">{index + 1}</td>
                       <td className="border px-3 py-2">{ele.deviceid || '--'}</td>
                       <td className="border px-3 py-2">{ele.date || '--'}</td>

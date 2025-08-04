@@ -38,13 +38,14 @@ useEffect(() => {
   const getData = async () => {
     setLoading(true);
     try {
-      const response = await fetch('https://otplai.com:4004/api/get_data', {
+      const response = await fetch('https://temperature-humidity-datalogger-api.otplai.com/api/get_Info', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: params.id, page: count }),
       });
       if (!response.ok) throw new Error(`Status ${response.status}`);
       const data = await response.json();
+      console.log(data);
       setSensor(data);
     } catch (err) {
       console.error('❌ Failed to fetch data:', err);
@@ -491,12 +492,14 @@ useEffect(() => {
                   <td className="border px-2 py-1">{index + 1}</td>
                   <td className="border px-2 py-1">{params.id}</td>
                   <td className="border px-2 py-1">
-                    {ele.date.includes('T') && ele.date.endsWith('Z')
+                    {/* {ele.date.includes('T') && ele.date.endsWith('Z')
                       ? `${ele.date.split('T')[0]} / ${new Date(ele.date).toLocaleTimeString(
                         'en-IN',
                         { timeZone: 'Asia/Kolkata' }
                       )}`
-                      : ele.date}
+                      : ele.date} */}
+
+                      {ele.createdAt}
                   </td>
                   <td className="border px-2 py-1">{ele.humidity || ele.hume}</td>
                   <td className="border px-2 py-1">{ele.temperature || ele.Temp}</td>

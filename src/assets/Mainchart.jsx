@@ -10,9 +10,10 @@ const Mainchart = ({ sensorData = [] }) => {
   // ✅ Safely reverse without mutating original
   const reversedData = [...sensorData].reverse();
 
+  console.log(reversedData)
   // ✅ Create x-axis labels
   const labels = reversedData.map((ele) => {
-    const date = ele?.date || '';
+    const date = ele?.createdAt || '';
     if (date.includes('T') && date.endsWith('Z')) {
       const time = new Date(date).toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata' });
       return `${date.split('T')[0]} / ${time}`;

@@ -4,7 +4,7 @@ import mqtt from 'mqtt';
 
 export const MqttContext = createContext();
 
-const MQTT_BROKER_URL = 'wss://otplai.com:8884';
+const MQTT_BROKER_URL = 'mqtts://otplai.com:9001';
 const MQTT_OPTIONS = {
   username: 'oyt',
   password: '123456789',
