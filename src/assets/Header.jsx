@@ -7,7 +7,7 @@ function Downdata() {
   const navigate = useNavigate(); 
 
   return (
-    <ul className="absolute top-14 right-2 mt-2 bg-white dark:bg-gray-900 dark:text-white shadow-md rounded-md w-48 z-[99]">
+    <ul className="absolute top-14 right-2 mt-2 bg-white dark:bg-gray-900 dark:text-white shadow-md rounded-md w-48 z-[999]">
       <li className="text-left px-4 py-2">Welcome!</li>
       <li className="text-center p-2 cursor-pointer" onClick={() => navigate('/Support')}>
         <Settings className="inline mr-2" /> Settings

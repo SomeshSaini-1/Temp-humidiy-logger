@@ -65,7 +65,7 @@ const Sidebar = () => {
         </Link>
 
         <Link
-          to="/Support"
+          to="/Setting"
           className="flex items-center gap-3 text-gray-700 font-medium hover:bg-blue-100 px-2 py-2 rounded transition-all"
         >
           <Settings size={20} />

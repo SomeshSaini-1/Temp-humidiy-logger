@@ -125,17 +125,25 @@ useEffect(() => {
     }))
   }
 
-  const handleSubmit = () => {
-    console.log(from_to_data);
-    exportToExcel('xlsx');
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!from_to_data.From || !from_to_data.To) {
+      alert("Please select both From and To dates.");
+      return;
+    }
+    const download_link = `https://temperature-humidity-datalogger-api.otplai.com/api/Get_info_excle?device_id=${params.id}&from=${from_to_data.From}&to=${from_to_data.To}`;
+    window.open(download_link, '_blank', 'noopener,noreferrer');
+    setshowfrom(false);
+  };
+
   const from_to = () => {
     return (
       <div className='absolute w-full h-full inset-0' onClick={() => setshowfrom(false)}>
-
-        <from onClick={(e) => e.stopPropagation()}
+        <form
+          onClick={(e) => e.stopPropagation()}
           className="absolute p-6 w-[15rem] bg-[#fff] text-[#000] rounded-lg shadow-xl space-y-4 z-[50]"
           style={{ bottom: "6rem", right: "1rem" }}
+          onSubmit={handleSubmit}
         >
           {/* From Date Input */}
           <div className="flex flex-col space-y-1">
@@ -167,14 +175,12 @@ useEffect(() => {
           <div className="pt-2">
             <button
               type='submit'
-              onSubmit={handleSubmit}
               className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
             >
               Excel
             </button>
           </div>
-        </from>
-
+        </form>
       </div>
     );
   };
@@ -421,7 +427,7 @@ useEffect(() => {
                   </p>
                 </div>
               </div>
-              <div className="h-32">
+              <div className="h-32 overflow-hidden">
                 <Chart
                   sensorData={sensorData.map((data) => data.humidity)}
                   timestamp={sensorData.map((data) => data.timestamp)}
@@ -439,7 +445,7 @@ useEffect(() => {
                   </p>
                 </div>
               </div>
-              <div className="h-32">
+              <div className="h-32 overflow-hidden">
                 <Chart
                   sensorData={sensorData.map((data) => data.temperature)}
                   timestamp={sensorData.map((data) => data.timestamp)}
@@ -465,15 +471,20 @@ useEffect(() => {
         {/* Data Table */}
         <div className="bg-[var(--bg)]  p-6 rounded shadow-md my-4">
 
-          <span className='flex justify-between gap-4 mb-4'>
+          <span className='flex justify-end gap-4 mb-4'>
 
             {showfrom && from_to()}
 
-            <button className='flex gap-4 font-bold border-2 rounded-lg px-4 py-2 '><SlidersHorizontal />Filter</button>
-            <button className='flex gap-4 font-bold border-2 rounded-lg px-4 py-2 bg-blue-500 text-white'
+            {/* <button className='flex gap-4 font-bold border-2 rounded-lg px-4 py-2 '><SlidersHorizontal />Filter</button> */}
+     
+            <button
+             className='flex gap-4 font-bold border-2 rounded-lg px-4 py-2 bg-blue-500 text-white'
               // onClick={() => exportToExcel('xlsx')}
-              onClick={() => setshowfrom(!showfrom)}
-            >Download <Download /></button>
+              onClick={() => setshowfrom(!showfrom)}>
+                
+              Download <Download />
+            </button>
+
           </span>
 
           <table className="min-w-full border" id="datatable">
@@ -507,6 +518,7 @@ useEffect(() => {
               ))}
             </tbody>
           </table>
+          {Sensor.length > 1000 && 
           <div className="mt-2 flex items-center justify-center">
             <button
               onClick={() => setCount((prev) => Math.max(prev - 1, 1))}
@@ -522,6 +534,7 @@ useEffect(() => {
               Next <MoveRight className='my-2' />
             </button>
           </div>
+          }
         </div>
       </main>
     </div>

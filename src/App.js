@@ -6,6 +6,7 @@ import Home from './components/Home';
 import AddDevice from './components/AddDevice';
 import Dashboard from './components/Dashboard';
 import Support from './components/Support';
+import Setting from './components/Setting';
 import './App.css';
 
 // ProtectedRoute as a wrapper component
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
   {
     path: '/Support',
     element: <ProtectedRoute><Support /></ProtectedRoute>,
+  },
+  {
+    path: '/Setting',
+    element: <ProtectedRoute><Setting /></ProtectedRoute>,
   },
   {
     path: '/add-device',
