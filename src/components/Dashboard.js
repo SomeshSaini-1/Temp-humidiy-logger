@@ -136,6 +136,20 @@ useEffect(() => {
     setshowfrom(false);
   };
 
+  
+
+  const handleSubmit1 = (e) => {
+    e.preventDefault();
+    if (!from_to_data.From || !from_to_data.To) {
+      alert("Please select both From and To dates.");
+      return;
+    }
+    const download_link = `https://temperature-humidity-datalogger-api.otplai.com/api/Get_info_pdf?device_id=${params.id}&from=${from_to_data.From}&to=${from_to_data.To}`;
+    window.open(download_link, '_blank', 'noopener,noreferrer');
+    setshowfrom(false);
+  };
+
+
   const from_to = () => {
     return (
       <div className='absolute w-full h-full inset-0' onClick={() => setshowfrom(false)}>
@@ -143,7 +157,6 @@ useEffect(() => {
           onClick={(e) => e.stopPropagation()}
           className="absolute p-6 w-[15rem] bg-[#fff] text-[#000] rounded-lg shadow-xl space-y-4 z-[50]"
           style={{ bottom: "6rem", right: "1rem" }}
-          onSubmit={handleSubmit}
         >
           {/* From Date Input */}
           <div className="flex flex-col space-y-1">
@@ -172,12 +185,22 @@ useEffect(() => {
           </div>
 
           {/* Download Button */}
-          <div className="pt-2">
+          <div className="pt-2 flex gap-4">
             <button
               type='submit'
+              onClick={handleSubmit}
               className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
             >
               Excel
+            </button>
+
+            
+            <button
+              type='submit'
+              onClick={handleSubmit1}
+              className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+            >
+              PDF
             </button>
           </div>
         </form>
