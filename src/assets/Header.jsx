@@ -47,7 +47,7 @@ const Header = ({ icon, Name }) => {
     <>
       <div className="flex justify-between items-center mb-6 border py-4 px-2 rounded-xl relative">
         <div>
-          <div className="text-2xl font-bold flex gap-4 items-center"><span className='text-black'>{icon}</span> {Name}</div>
+          <div className="text-lg lg:text-2xl font-bold flex gap-4 items-center"><span className='text-black'>{icon}</span> {Name}</div>
         </div>
         <div className="flex items-center justify-center cursor-pointer gap-4">
           <span onClick={toggleTheme} className="hover:text-yellow-500">

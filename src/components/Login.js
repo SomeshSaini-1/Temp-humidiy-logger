@@ -56,7 +56,7 @@ const Login = () => {
           </button>
         </form>
       </div>
-      <div className='flex items-center justify-center w-full max-w-2xl'>
+      <div className='flex items-center justify-center w-full max-w-2xl hidden md:block '>
         <img src={"/logo.png"} alt='logo' className='w-3/4' />
       </div>
     </div>

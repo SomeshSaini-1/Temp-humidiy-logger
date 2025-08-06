@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchSensorData, addSensorData, fetchDeviceData } from '../redux/sensorSlice';
 import { MqttContext } from '../assets/Mqtt';
-import * as XLSX from 'xlsx';
 import Sidebar from '../assets/Sidebar';
 import Header from '../assets/Header';
 import Mainchart from '../assets/Mainchart';
@@ -91,16 +90,7 @@ useEffect(() => {
     }
   }, [data_sen, dispatch]);
 
-  // Export to Excel
-  const exportToExcel = (type = 'xlsx', fn) => {
-    if (Sensor.length === 0) {
-      alert('No data to export');
-      return;
-    }
-    const elt = document.getElementById('datatable');
-    const wb = XLSX.utils.table_to_book(elt, { sheet: 'Sheet1' });
-    XLSX.writeFile(wb, fn || `SensorData_${params.id}.${type}`);
-  };
+
 
 
 
