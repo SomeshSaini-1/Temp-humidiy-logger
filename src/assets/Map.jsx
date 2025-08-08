@@ -12,7 +12,7 @@ L.Icon.Default.mergeOptions({
 });
 
 const Map = ({ height = 500 }) => {
-  const defaultCenter = [26.855980263390784, 75.78391780923478];
+  const defaultCenter = [26.852770, 75.779541];
 
   const positions = [
     [26.852770, 75.779541],
@@ -26,7 +26,7 @@ const Map = ({ height = 500 }) => {
         zoom={13}
         style={{ 
           height: `${height}px`,
-           width: '100%'
+          //  width: '100%'
          }}
       >
         <TileLayer
