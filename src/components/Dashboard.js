@@ -37,10 +37,11 @@ useEffect(() => {
   const getData = async () => {
     setLoading(true);
     try {
+      console.log(JSON.stringify({ id: params.id, page: count }))
       const response = await fetch('https://temperature-humidity-datalogger-api.otplai.com/api/get_Info', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: params.id, page: count }),
+        body: JSON.stringify({ "device_id" : params.id, "page" : count }),
       });
       if (!response.ok) throw new Error(`Status ${response.status}`);
       const data = await response.json();
@@ -67,19 +68,25 @@ useEffect(() => {
   // Parse MQTT data
   const rxTopic = Object.keys(data).find((key) => key.endsWith('/RX'));
   const statusTopic = Object.keys(data).find((key) => key.endsWith('/status'));
-  console.log(data[statusTopic])
-  let data_sen = null;
-  try {
-    if (rxTopic && data[rxTopic]?.payload) {
-      data_sen = JSON.parse(data[rxTopic].payload);
+  console.log(data[rxTopic])
+
+  const [data_sen, setDataSen] = useState(null);
+
+  useEffect(() => {
+    if (rxTopic && data[rxTopic]) {
+      try {
+        setDataSen(JSON.parse(data[rxTopic]));
+      } catch (err) {
+        console.error('❌ Failed to parse MQTT payload:', data[rxTopic], err);
+        setDataSen(null);
+      }
     }
-  } catch (err) {
-    console.error('❌ Failed to parse MQTT payload:', data[rxTopic]?.payload, err);
-  }
+  }, [rxTopic, data]);
 
   // Update Redux with MQTT data
   useEffect(() => {
     if (data_sen) {
+  console.log(data_sen)
       dispatch(
         addSensorData({
           timestamp: data_sen.time,

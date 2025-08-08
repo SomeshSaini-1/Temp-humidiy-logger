@@ -1,15 +1,63 @@
+import { useRef, useCallback, useMemo } from 'react';
 import {
   FaLifeRing,
   FaEnvelope,
   FaPhoneAlt,
   FaUser,
-  FaRegCommentDots
+  FaRegCommentDots,
 } from 'react-icons/fa';
 import Sidebar from '../assets/Sidebar';
 import Header from '../assets/Header';
 import { Link } from 'react-router-dom';
 
 const Support = () => {
+  // 1. Using useRef for form inputs to avoid re-renders
+  const nameRef = useRef();
+  const mobileRef = useRef();
+  const messageRef = useRef();
+
+  // 2. Using useCallback to memoize the form submission handler
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault();
+    const name = nameRef.current.value;
+    const mobile = mobileRef.current.value;
+    const message = messageRef.current.value;
+
+    console.log({
+      name,
+      mobile,
+      message,
+    });
+
+    // Here you would typically perform an API call to submit the support request
+    alert('Support request submitted! Check the console for details.');
+
+    // Optional: Clear the form inputs after submission
+    nameRef.current.value = '';
+    mobileRef.current.value = '';
+    messageRef.current.value = '';
+  }, []); // Empty dependency array as the refs are stable
+
+  // 3. Using useMemo to memoize the FAQ data
+  const faqs = useMemo(
+    () => [
+      {
+        question: 'How long does support take to respond?',
+        answer: 'Typically within 24 hours during working days.',
+      },
+      {
+        question: 'Where can I check system status?',
+        answer: 'Visit our <a href="/" class="text-blue-500 underline">Status Page</a> for live updates.',
+      },
+      {
+        question: 'Can I request a feature?',
+        answer:
+          'Yes, use the contact form and include "Feature Request" in the subject.',
+      },
+    ],
+    []
+  );
+
   return (
     <div className="flex h-screen bg-[var(--secondary)] text-[var(--text)]">
       <Sidebar />
@@ -27,22 +75,30 @@ const Support = () => {
                 className="w-72"
               />
               <p className="text-center mt-4 text-sm text-gray-700">
-                Our support team is here to assist you. Fill the form and we'll get back shortly.
+                Our support team is here to assist you. Fill the form and we'll
+                get back shortly.
               </p>
             </div>
 
             {/* Form */}
             <div className="md:w-1/2 p-8">
-              <h2 className="text-2xl font-semibold text-gray-800 mb-2">Need Some Help?</h2>
-              <p className="text-sm text-gray-500 mb-6">Fill in the details below and we’ll get in touch.</p>
+              <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                Need Some Help?
+              </h2>
+              <p className="text-sm text-gray-500 mb-6">
+                Fill in the details below and we’ll get in touch.
+              </p>
 
-              <form className="space-y-5">
+              <form className="space-y-5" onSubmit={handleSubmit}>
                 {/* Name */}
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1">Your Name</label>
+                  <label className="block text-sm text-gray-600 mb-1">
+                    Your Name
+                  </label>
                   <div className="flex items-center border border-gray-300 rounded-md px-3 py-2">
                     <FaUser className="text-gray-400 mr-2" />
                     <input
+                      ref={nameRef}
                       type="text"
                       placeholder="Enter your name"
                       className="w-full text-sm focus:outline-none bg-transparent"
@@ -52,10 +108,13 @@ const Support = () => {
 
                 {/* Mobile */}
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1">Mobile No.</label>
+                  <label className="block text-sm text-gray-600 mb-1">
+                    Mobile No.
+                  </label>
                   <div className="flex items-center border border-gray-300 rounded-md px-3 py-2">
                     <FaPhoneAlt className="text-gray-400 mr-2" />
                     <input
+                      ref={mobileRef}
                       type="tel"
                       placeholder="Enter your mobile number"
                       className="w-full text-sm focus:outline-none bg-transparent"
@@ -65,10 +124,13 @@ const Support = () => {
 
                 {/* Message */}
                 <div>
-                  <label className="block text-sm text-gray-600 mb-1">Your Message</label>
+                  <label className="block text-sm text-gray-600 mb-1">
+                    Your Message
+                  </label>
                   <div className="flex items-start border border-gray-300 rounded-md px-3 py-2">
                     <FaRegCommentDots className="text-gray-400 mt-1 mr-2" />
                     <textarea
+                      ref={messageRef}
                       rows="4"
                       placeholder="Write your message here..."
                       className="w-full text-sm focus:outline-none bg-transparent resize-none"
@@ -102,7 +164,8 @@ const Support = () => {
             <div className="space-y-4">
               <h3 className="text-xl font-semibold">Need help?</h3>
               <p className="text-sm text-[var(--muted-text)]">
-                Reach out to our support team and we’ll respond as soon as possible.
+                Reach out to our support team and we’ll respond as soon as
+                possible.
               </p>
               <div className="flex items-center space-x-3">
                 <FaEnvelope className="text-blue-500" />
@@ -116,30 +179,23 @@ const Support = () => {
 
             {/* FAQs */}
             <div>
-              <h3 className="text-xl font-semibold mb-4">Frequently Asked Questions</h3>
+              <h3 className="text-xl font-semibold mb-4">
+                Frequently Asked Questions
+              </h3>
               <div className="space-y-3">
-                <div>
-                  <h4 className="font-medium">How long does support take to respond?</h4>
-                  <p className="text-sm text-[var(--muted-text)]">
-                    Typically within 24 hours during working days.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-medium">Where can I check system status?</h4>
-                  <p className="text-sm text-[var(--muted-text)]">
-                    Visit our{' '}
-                    <Link to="/" className="text-blue-500 underline">
-                      Status Page
-                    </Link>{' '}
-                    for live updates.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-medium">Can I request a feature?</h4>
-                  <p className="text-sm text-[var(--muted-text)]">
-                    Yes, use the contact form and include "Feature Request" in the subject.
-                  </p>
-                </div>
+                {/* Dynamically render FAQs using the memoized array */}
+                {faqs.map((faq, index) => (
+                  <div key={index}>
+                    <h4 className="font-medium">{faq.question}</h4>
+                    <p
+                      className="text-sm text-[var(--muted-text)]"
+                      // NOTE: We're using dangerouslySetInnerHTML here because the FAQ answer
+                      // contains an HTML link. This should be used with caution.
+                      // For this specific use case, it is generally safe.
+                      dangerouslySetInnerHTML={{ __html: faq.answer }}
+                    ></p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
