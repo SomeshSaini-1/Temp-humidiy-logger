@@ -7,7 +7,7 @@ export const MqttContext = createContext();
 const MQTT_BROKER_URL = 'mqtts://otplai.com:9001';
 const MQTT_OPTIONS = {
   username: 'oxmo',
-  password: 'oxmo123',
+  password: '123456789',
 };
 
 const MqttProvider = ({ children }) => {
